@@ -12,6 +12,9 @@ test("the optional OpenAI secret is never public-prefixed", () => assert.doesNot
 test("baseline production security headers are configured", () => {
   const config = read("next.config.ts");
   for (const header of ["Content-Security-Policy", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Permissions-Policy"]) assert.match(config, new RegExp(header));
+  assert.match(config, /VERCEL_ENV === "preview"/);
+  assert.match(config, /NODE_ENV === "development"/);
+  assert.match(config, /Production deliberately never receives unsafe-eval/);
 });
 test("auth email redirects use configured app URL rather than request origin", () => {
   const actions = read("src/app/(auth)/actions.ts");
