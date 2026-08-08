@@ -1,6 +1,7 @@
 export type RegistrationErrorCategory =
   | "rate_limited"
   | "invalid_email"
+  | "email_not_authorized"
   | "weak_password"
   | "existing_account"
   | "invalid_redirect"
@@ -11,6 +12,7 @@ type AuthErrorLike = { code?: string; message?: string; name?: string; status?: 
 
 const knownCodes: Partial<Record<string, RegistrationErrorCategory>> = {
   email_address_invalid: "invalid_email",
+  email_address_not_authorized: "email_not_authorized",
   email_exists: "existing_account",
   over_email_send_rate_limit: "rate_limited",
   over_request_rate_limit: "rate_limited",

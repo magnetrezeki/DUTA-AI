@@ -10,14 +10,16 @@ const submitButton = read("src/components/auth/registration-submit-button.tsx");
 const appUrl = read("src/lib/app-url.ts");
 
 test("registration categorizes rate limits, validation, existing accounts, redirects, network, and unknown failures", () => {
-  for (const category of ["rate_limited", "invalid_email", "weak_password", "existing_account", "invalid_redirect", "network_failure", "unexpected_auth"]) {
+  for (const category of ["rate_limited", "invalid_email", "email_not_authorized", "weak_password", "existing_account", "invalid_redirect", "network_failure", "unexpected_auth"]) {
     assert.match(categories, new RegExp(`"${category}"`));
   }
   assert.match(categories, /error\.status === 429/);
+  assert.match(categories, /email_address_not_authorized: "email_not_authorized"/);
 });
 
 test("registration returns only safe categories and does not log raw Supabase messages", () => {
   assert.match(actions, /requestId, category, code/);
+  assert.match(actions, /JSON\.stringify\(\{ requestId, category, code \}\)/);
   assert.doesNotMatch(actions, /message: error\.message/);
   assert.doesNotMatch(actions, /console\.error\([^)]*password/s);
 });
@@ -28,7 +30,7 @@ test("registration catches network failures and detects non-created duplicate id
 });
 
 test("registration has localized safe messages for every failure category", () => {
-  for (const category of ["rate_limited", "existing_account", "network_failure", "invalid_redirect", "unexpected_auth"]) {
+  for (const category of ["rate_limited", "email_not_authorized", "existing_account", "network_failure", "invalid_redirect", "unexpected_auth"]) {
     assert.match(registerPage, new RegExp(`${category}:`));
   }
 });

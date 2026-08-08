@@ -38,7 +38,9 @@ function logRegistrationFailure(
   category: RegistrationErrorCategory,
   code: string,
 ) {
-  console.error("[auth.register] signup failed", { requestId, category, code });
+  console.error(
+    `[auth.register] signup failed ${JSON.stringify({ requestId, category, code })}`,
+  );
 }
 
 export async function register(formData: FormData) {

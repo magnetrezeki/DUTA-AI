@@ -11,6 +11,7 @@ type RegisterPageProps = {
 const errorMessages: Record<string, string> = {
   invalid_name: "Nama harus terdiri dari 2 sampai 100 karakter.",
   invalid_email: "Masukkan alamat email yang valid.",
+  email_not_authorized: "Alamat email ini belum diizinkan oleh layanan email pendaftaran. Silakan gunakan email yang diizinkan atau hubungi pengelola DUTA AI.",
   weak_password: "Kata sandi minimal 8 karakter dan harus berisi huruf serta angka.",
   rate_limited: "Terlalu banyak percobaan pendaftaran. Tunggu sebentar lalu coba lagi.",
   existing_account: "Jika akun dengan email ini sudah ada, gunakan halaman Masuk atau Lupa kata sandi.",
