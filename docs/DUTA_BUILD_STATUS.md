@@ -115,7 +115,32 @@ Completed on 8 August 2026:
 - Live email delivery and end-to-end password recovery testing
 - Job-alert notification delivery pending approved notification infrastructure
 - SISKOP2MI/external feed activation pending a verified, permitted feed or API
-- Day 6 and later modules pending explicit product-owner approval
+- Day 7 and later modules pending explicit product-owner approval
+
+## Day 6 implementation
+
+- FINAL LOCAL DAY 6 STATUS: PASS
+- Read-only DUTA AI orchestration layer with deterministic intent routing
+- Controlled server-side tool registry for verified offices, contacts, news, jobs,
+  community places/health, organizations, events, and the signed-in user's own
+  Career Passport/application summary
+- Explicit PUBLIC_READ, USER_OWNED_READ, AUTHORIZED_ROLE_READ, and
+  PROHIBITED_AI_ACCESS classifications
+- Prompt-injection and prohibited-capability safety routing
+- Official results require verified, non-demo source records; unavailable data is
+  never invented
+- Community and health-directory results carry clear trust and medical warnings
+- Career data is session-bound and remains protected by existing RLS
+- Structured responses include intent, agent, confidence, entities, sources,
+  actions, warnings, follow-up suggestions, and a request ID
+- Safe metadata-only observability excludes prompts, CVs, profile content, and secrets
+- Optional server-only OpenAI provider abstraction prepared; no key or live provider
+  integration added
+- 65 authorization/regression tests: PASS (including 28 Day 6 checks)
+- Lint: PASS
+- Typecheck: PASS
+- Production build: PASS
+- Database migration required: NO
 
 ## Day 5 implementation
 

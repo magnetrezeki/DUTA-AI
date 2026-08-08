@@ -14,6 +14,7 @@ export function SiteHeader() {
           <Link href="/map" className="text-slate-600 hover:text-brand-700">Map</Link>
           <Link href="/organizations" className="text-slate-600 hover:text-brand-700">Komunitas</Link>
           <Link href="/career" className="text-slate-600 hover:text-brand-700">Karier</Link>
+          <Link href="/ai" className="text-slate-600 hover:text-brand-700">Asisten AI</Link>
           <Link href="/login" className="text-slate-600 hover:text-brand-700">Masuk</Link>
           <Link href="/dashboard" className="text-brand-700 hover:text-brand-800">Dashboard</Link>
         </nav>
