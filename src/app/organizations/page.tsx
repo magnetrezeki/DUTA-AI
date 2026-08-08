@@ -3,6 +3,8 @@ import { Container } from "@/components/ui/container";
 import { createClient } from "@/lib/supabase/server";
 import { submitOrganization } from "./actions";
 
+export const metadata = { title: "Organisasi", description: "Temukan organisasi, pengumuman, dan acara komunitas Indonesia di Malaysia." };
+
 export const dynamic = "force-dynamic";
 
 export default async function OrganizationsPage({ searchParams }: { searchParams: Promise<{ q?: string; area?: string; success?: string; error?: string }> }) {

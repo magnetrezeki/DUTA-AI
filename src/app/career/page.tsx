@@ -3,6 +3,8 @@ import { Container } from "@/components/ui/container";
 import { createClient } from "@/lib/supabase/server";
 import type { JobSummary } from "@/lib/career/types";
 
+export const metadata = { title: "DUTA Karier", description: "Cari lowongan tepercaya dan kelola perjalanan karier Anda dengan privasi ketat." };
+
 export const dynamic = "force-dynamic";
 
 export default async function CareerPage({ searchParams }: { searchParams: Promise<{ q?: string; location?: string; type?: string }> }) {

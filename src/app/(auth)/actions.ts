@@ -1,8 +1,8 @@
 "use server";
 
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { appUrl } from "@/lib/app-url";
 
 function formValue(formData: FormData, name: string) {
   const value = formData.get(name);
@@ -27,11 +27,6 @@ function destination(path: string, key: "error" | "success", value: string) {
   return `${path}?${params.toString()}`;
 }
 
-async function requestOrigin() {
-  const requestHeaders = await headers();
-  return requestHeaders.get("origin") ?? process.env.NEXT_PUBLIC_APP_URL;
-}
-
 export async function register(formData: FormData) {
   const displayName = formValue(formData, "displayName");
   const email = formValue(formData, "email").toLowerCase();
@@ -49,19 +44,13 @@ export async function register(formData: FormData) {
     redirect(destination("/register", "error", "weak_password"));
   }
 
-  const origin = await requestOrigin();
-
-  if (!origin) {
-    redirect(destination("/register", "error", "registration_failed"));
-  }
-
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: { display_name: displayName },
-      emailRedirectTo: `${origin}/auth/callback?next=/onboarding`,
+      emailRedirectTo: appUrl("/auth/callback?next=/onboarding"),
     },
   });
 
@@ -112,15 +101,9 @@ export async function requestPasswordReset(formData: FormData) {
     redirect(destination("/forgot-password", "error", "invalid_email"));
   }
 
-  const origin = await requestOrigin();
-
-  if (!origin) {
-    redirect(destination("/forgot-password", "error", "reset_failed"));
-  }
-
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?next=/update-password`,
+    redirectTo: appUrl("/auth/callback?next=/update-password"),
   });
 
   redirect(destination("/forgot-password", "success", "check_email"));

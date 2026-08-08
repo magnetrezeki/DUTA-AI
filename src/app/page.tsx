@@ -18,18 +18,18 @@ export default function HomePage() {
             komunitas Indonesia di Malaysia.
           </p>
           <div className="mt-8">
-            <ButtonLink href="#status">Lihat status persiapan</ButtonLink>
+            <ButtonLink href="/ai">Mulai dengan Asisten DUTA AI</ButtonLink>
           </div>
           <section
             id="status"
             className="mt-16 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
           >
             <h2 className="text-lg font-semibold text-slate-950">
-              Fondasi teknis siap
+              Layanan utama tersedia
             </h2>
             <p className="mt-2 leading-7 text-slate-600">
-              Modul layanan belum dibangun. Pengembangan berikutnya akan
-              dilakukan bertahap setelah arahan pemilik produk.
+              Temukan informasi perwakilan, berita resmi, direktori komunitas,
+              organisasi, acara, dan peluang karier melalui modul DUTA AI.
             </p>
           </section>
         </div>

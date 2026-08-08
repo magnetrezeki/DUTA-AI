@@ -4,6 +4,8 @@ import { NearbyPlaces } from "@/components/map/nearby-places";
 import { createClient } from "@/lib/supabase/server";
 import { trustLabels, type CommunityPlace, type MapCategory } from "@/lib/day3/types";
 
+export const metadata = { title: "DUTA Map", description: "Direktori tempat komunitas Indonesia di Malaysia dengan label kepercayaan yang jelas." };
+
 export const dynamic = "force-dynamic";
 
 export default async function MapPage({ searchParams }: { searchParams: Promise<{ q?: string; category?: string; area?: string }> }) {

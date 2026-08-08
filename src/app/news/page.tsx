@@ -4,6 +4,8 @@ import { VerificationBadge } from "@/components/data/verification-badge";
 import { createClient } from "@/lib/supabase/server";
 import type { NewsItem } from "@/lib/day2/types";
 
+export const metadata = { title: "DUTA News", description: "Berita dan pengumuman dengan tautan ke sumber resminya." };
+
 export const dynamic = "force-dynamic";
 
 export default async function NewsPage() {

@@ -8,6 +8,8 @@ import type {
   ServiceCategory,
 } from "@/lib/day2/types";
 
+export const metadata = { title: "DUTA Connect", description: "Temukan kantor perwakilan dan kontak layanan resmi yang relevan untuk wilayah Anda." };
+
 export const dynamic = "force-dynamic";
 
 type ConnectPageProps = {
