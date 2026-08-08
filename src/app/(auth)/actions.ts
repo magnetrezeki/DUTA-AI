@@ -3,6 +3,12 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { appUrl } from "@/lib/app-url";
+import {
+  classifyAuthError,
+  classifyThrownAuthError,
+  safeAuthErrorCode,
+  type RegistrationErrorCategory,
+} from "@/lib/auth/registration-errors";
 
 function formValue(formData: FormData, name: string) {
   const value = formData.get(name);
@@ -27,7 +33,16 @@ function destination(path: string, key: "error" | "success", value: string) {
   return `${path}?${params.toString()}`;
 }
 
+function logRegistrationFailure(
+  requestId: string,
+  category: RegistrationErrorCategory,
+  code: string,
+) {
+  console.error("[auth.register] signup failed", { requestId, category, code });
+}
+
 export async function register(formData: FormData) {
+  const requestId = crypto.randomUUID();
   const displayName = formValue(formData, "displayName");
   const email = formValue(formData, "email").toLowerCase();
   const password = rawFormValue(formData, "password");
@@ -44,23 +59,42 @@ export async function register(formData: FormData) {
     redirect(destination("/register", "error", "weak_password"));
   }
 
+  let emailRedirectTo: string;
+  try {
+    emailRedirectTo = appUrl("/auth/callback?next=/onboarding");
+  } catch {
+    logRegistrationFailure(requestId, "invalid_redirect", "invalid_app_url");
+    redirect(destination("/register", "error", "invalid_redirect"));
+  }
+
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { display_name: displayName },
-      emailRedirectTo: appUrl("/auth/callback?next=/onboarding"),
-    },
-  });
+  let result: Awaited<ReturnType<typeof supabase.auth.signUp>>;
+  try {
+    result = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { display_name: displayName },
+        emailRedirectTo,
+      },
+    });
+  } catch (error) {
+    const category = classifyThrownAuthError(error);
+    logRegistrationFailure(requestId, category, "request_failed");
+    redirect(destination("/register", "error", category));
+  }
+
+  const { data, error } = result;
 
   if (error) {
-    console.error("[auth.register] Supabase signUp failed", {
-      code: error.code,
-      status: error.status,
-      message: error.message,
-    });
-    redirect(destination("/register", "error", "registration_failed"));
+    const category = classifyAuthError(error);
+    logRegistrationFailure(requestId, category, safeAuthErrorCode(error));
+    redirect(destination("/register", "error", category));
+  }
+
+  if (data.user?.identities?.length === 0) {
+    logRegistrationFailure(requestId, "existing_account", "identity_not_created");
+    redirect(destination("/register", "error", "existing_account"));
   }
 
   if (data.session) {

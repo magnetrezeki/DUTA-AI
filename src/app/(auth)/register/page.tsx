@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { register } from "@/app/(auth)/actions";
 import { AuthShell } from "@/components/auth/auth-shell";
-import { Field, FormNotice, SubmitButton } from "@/components/auth/form-elements";
+import { Field, FormNotice } from "@/components/auth/form-elements";
+import { RegistrationSubmitButton } from "@/components/auth/registration-submit-button";
 
 type RegisterPageProps = {
   searchParams: Promise<{ error?: string }>;
@@ -11,7 +12,11 @@ const errorMessages: Record<string, string> = {
   invalid_name: "Nama harus terdiri dari 2 sampai 100 karakter.",
   invalid_email: "Masukkan alamat email yang valid.",
   weak_password: "Kata sandi minimal 8 karakter dan harus berisi huruf serta angka.",
-  registration_failed: "Pendaftaran belum berhasil. Jika akun Anda sudah ada, jangan mendaftar lagi—gunakan halaman Masuk.",
+  rate_limited: "Terlalu banyak percobaan pendaftaran. Tunggu sebentar lalu coba lagi.",
+  existing_account: "Jika akun dengan email ini sudah ada, gunakan halaman Masuk atau Lupa kata sandi.",
+  network_failure: "Tidak dapat menghubungi layanan pendaftaran. Silakan coba lagi.",
+  invalid_redirect: "Konfigurasi alamat pendaftaran belum benar. Silakan hubungi pengelola DUTA AI.",
+  unexpected_auth: "Pendaftaran belum berhasil. Silakan coba lagi atau gunakan halaman Masuk.",
 };
 
 export default async function RegisterPage({ searchParams }: RegisterPageProps) {
@@ -32,7 +37,7 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
           <Field id="email" name="email" type="email" label="Email" autoComplete="email" required />
           <Field id="password" name="password" type="password" label="Kata sandi" autoComplete="new-password" minLength={8} required />
           <p className="text-xs leading-5 text-slate-500">Minimal 8 karakter, dengan sedikitnya satu huruf dan satu angka.</p>
-          <SubmitButton>Daftar</SubmitButton>
+          <RegistrationSubmitButton />
         </form>
         <p className="text-sm text-slate-600">
           Sudah punya akun?{" "}
