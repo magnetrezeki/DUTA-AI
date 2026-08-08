@@ -4,16 +4,18 @@ Last updated: 8 August 2026
 
 ## Current milestone
 
-Day 4 Community OS is complete. Its hosted migration and metadata verification
-confirmed all seven tables, required keys and constraints, RLS on every table,
-and all 23 intended least-privilege policies. The hosted transaction test passed
-with simulated anonymous, member, organization-admin, and platform-moderator
-identities and rolled back all test data.
+Day 5 DUTA KARIER is complete. Employer registration and verification,
+tenant-scoped employer administration, moderated jobs, public search and detail,
+saved jobs, private Career Passports, applications, tracking, and private job
+alerts are implemented. The existing Day 5 migration defines eight RLS-protected
+tables and 24 least-privilege policies without destructive statements or seed data.
 
-Day 1 authentication, Day 2 Connect and News, and Day 3 Map regression tests
-remain passing. Day 4 is closed with no known Critical or High security issue.
+The SISKOP2MI adapter remains deliberately inactive and performs no scraping.
+Notification delivery and external feed/API activation remain deferred until an
+authorized integration is approved. The hosted migration, read-only schema
+verification, and rollback-based RLS/authorization transaction test all passed.
 
-**FINAL DAY 4 STATUS: PASS**
+**FINAL DAY 5 STATUS: PASS**
 
 ## Completed
 
@@ -69,6 +71,14 @@ remain passing. Day 4 is closed with no known Critical or High security issue.
 - Organization Admin A verified unable to manage Organization B
 - Organization self-verification and unauthorized role promotion verified blocked
 - Membership, announcement, event, claim, join-link, and private-data boundaries verified
+- DUTA KARIER employer registration, platform verification, and scoped employer dashboard
+- Moderated internal job posting, public job search/detail, saved jobs, and free applications
+- Private-by-default Career Passport with explicit per-application employer sharing
+- Applicant-owned application tracking and employer-scoped status management
+- Private job alerts with create, list, edit, and delete workflows
+- External official-source registry with required provenance and inactive SISKOP2MI adapter
+- Existing Day 5 migration with eight RLS-enabled tables and 24 policies
+- Day 5 static privacy/authorization suite and hosted rollback transaction test file
 
 ## Verification
 
@@ -78,11 +88,16 @@ Completed on 8 August 2026:
 - `npm run typecheck`: PASS
 - `npm run build`: PASS
 - Local application response: PASS
-- `npm run test:authz`: PASS (25 tests)
+- `npm run test:authz`: PASS (37 tests)
 - Day 1 regression tests: PASS
 - Day 2 regression tests: PASS
 - Day 3 regression tests: PASS
 - Day 4 security tests: PASS
+- Day 5 local security tests: PASS
+- Hosted Day 5 migration: PASS
+- Hosted Day 5 schema verification: PASS (8 tables, 6 enums, RLS on all
+  8 tables, and all 24 expected policies)
+- Hosted Day 5 PostgreSQL/RLS authorization transaction test: PASS
 - Hosted Day 2 public-table reads: PASS
 - Hosted Day 2 PostgreSQL/RLS transaction test: PASS
 - Hosted Day 4 migration and seven-table schema verification: PASS
@@ -98,7 +113,25 @@ Completed on 8 August 2026:
 - Executing the separate Day 1 PostgreSQL RLS isolation test
 - Live two-user profile isolation test
 - Live email delivery and end-to-end password recovery testing
-- Day 5 and later modules pending explicit product-owner approval
+- Job-alert notification delivery pending approved notification infrastructure
+- SISKOP2MI/external feed activation pending a verified, permitted feed or API
+- Day 6 and later modules pending explicit product-owner approval
+
+## Day 5 implementation
+
+- Employer submissions are pending and cannot self-verify
+- Only country-authorized platform moderation can verify an employer
+- Employer access is scoped through verified employer membership, not platform-role escalation
+- New employer jobs remain pending until platform moderation publishes them
+- Employer A cannot manage Employer B jobs or applicants
+- Career Passports are private, owner-bound, and cannot be made public
+- Employers cannot browse Passports; explicit sharing and a legitimate application are required
+- Applications expose applicant information only to the applicant and the job's authorized employer
+- Saved jobs and job alerts are private owner-bound records
+- External jobs require source, original URL, external ID, last check, and deadline fields
+- Inactive or unauthorized external sources cannot publish visible jobs
+- SISKOP2MI adapter is inactive and makes no network or scraping request
+- No employer, job, application, Passport, alert, or external-source row is seeded
 
 ## Day 3 implementation
 
