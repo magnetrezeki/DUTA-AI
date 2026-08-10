@@ -9,7 +9,12 @@ type UpdatePasswordPageProps = {
 const errorMessages: Record<string, string> = {
   weak_password: "Kata sandi minimal 8 karakter dan harus berisi huruf serta angka.",
   password_mismatch: "Konfirmasi kata sandi tidak sama.",
-  reset_failed: "Kata sandi belum dapat diperbarui. Silakan minta tautan baru.",
+  password_policy: "Kata sandi belum memenuhi persyaratan keamanan. Gunakan kata sandi yang lebih kuat.",
+  recovery_session: "Sesi pemulihan kata sandi tidak lagi valid. Silakan minta tautan baru.",
+  rate_limit: "Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi.",
+  network: "Layanan autentikasi tidak dapat dihubungi. Silakan coba lagi.",
+  auth_rejected: "Permintaan perubahan kata sandi ditolak. Silakan minta tautan baru.",
+  unknown: "Kata sandi belum dapat diperbarui. Silakan coba lagi atau minta tautan baru.",
 };
 
 export default async function UpdatePasswordPage({ searchParams }: UpdatePasswordPageProps) {
