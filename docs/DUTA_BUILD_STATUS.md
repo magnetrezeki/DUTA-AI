@@ -1,5 +1,18 @@
 # DUTA AI Build Status
 
+## DUTA Master Source Registry v1.0 — local implementation
+
+- Existing Day 2 `official_sources` table extended without duplicating the domain model
+- 27 explicitly approved active Malaysian official sources seeded with deterministic IDs
+- 1 REVIEW, 2 HOLD, and 1 LEGACY source retained disabled for safe follow-up
+- Verification level, registry status, priority, platform, and category validation added
+- Public access restricted to enabled VERIFIED A/B sources; admin writes remain country-scoped
+- Protected `/admin/official-sources` registry with filters and controlled editing
+- Server-only enabled-source data access prepared for Connect, News, and future ingestion
+- `official_source_items` schema prepared for future authorized ingestion and deduplication
+- No scraping, feed/API activation, service-role usage, or new secret added
+- Hosted migration application: DEFERRED pending product-owner review
+
 Last updated: 8 August 2026
 
 ## Current milestone
