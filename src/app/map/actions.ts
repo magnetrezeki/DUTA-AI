@@ -24,8 +24,9 @@ export async function submitPlace(data: FormData) {
   const state = value(data, "state");
   const latitude = Number(value(data, "latitude"));
   const longitude = Number(value(data, "longitude"));
+  const locationConfirmed = value(data, "locationConfirmed") === "1";
   const website = value(data, "website");
-  if (!uuid(categoryId) || name.length < 2 || address.length < 5 || city.length < 2 || state.length < 2 || !Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || !safeHttps(website)) done("/map/add", false);
+  if (!uuid(categoryId) || name.length < 2 || address.length < 5 || city.length < 2 || state.length < 2 || !locationConfirmed || !Number.isFinite(latitude) || !Number.isFinite(longitude) || latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || !safeHttps(website)) done("/map/add", false);
   const supabase = await createClient();
   const { error } = await supabase.from("community_places").insert({
     country_code: profile.current_country_code,
