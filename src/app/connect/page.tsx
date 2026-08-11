@@ -2,11 +2,6 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { VerificationBadge } from "@/components/data/verification-badge";
 import { createClient } from "@/lib/supabase/server";
-import type {
-  ContactChannel,
-  Jurisdiction,
-  ServiceCategory,
-} from "@/lib/day2/types";
 
 export const metadata = { title: "DUTA Connect", description: "Temukan kantor perwakilan dan kontak layanan resmi yang relevan untuk wilayah Anda." };
 
@@ -16,11 +11,46 @@ type ConnectPageProps = {
   searchParams: Promise<{ state?: string; service?: string }>;
 };
 
-function contactHref(contact: ContactChannel) {
-  if (contact.channel_type === "email") return `mailto:${contact.channel_value}`;
-  if (contact.channel_type === "phone") return `tel:${contact.channel_value}`;
-  if (contact.channel_type === "website" && contact.channel_value.startsWith("https://")) {
-    return contact.channel_value;
+type PublicOffice = {
+  id: string;
+  country_code: string;
+  name: string;
+  office_type: string;
+  source_name: string;
+  evidence_url: string;
+};
+
+type PublicJurisdiction = {
+  id: string;
+  office_id: string;
+  state_name: string;
+};
+
+type PublicService = {
+  office_id: string;
+  service_category_id: string;
+  name: string;
+};
+
+type PublicContact = {
+  id: string;
+  channel_type: string;
+  label: string;
+  raw_value: string;
+  e164_phone: string | null;
+  url: string | null;
+  last_verified_at: string | null;
+  source_name: string;
+  evidence_url: string;
+};
+
+function contactHref(contact: PublicContact) {
+  if (contact.channel_type === "email") return `mailto:${contact.raw_value}`;
+  if (["phone", "emergency_hotline"].includes(contact.channel_type)) {
+    return `tel:${contact.e164_phone ?? contact.raw_value}`;
+  }
+  if (["website", "service_portal", "appointment_portal", "directions"].includes(contact.channel_type) && contact.url) {
+    return contact.url;
   }
   return null;
 }
@@ -28,34 +58,47 @@ function contactHref(contact: ContactChannel) {
 export default async function ConnectPage({ searchParams }: ConnectPageProps) {
   const params = await searchParams;
   const supabase = await createClient();
-  const [{ data: jurisdictionData }, { data: serviceData }] = await Promise.all([
+  const [{ data: officeData }, { data: jurisdictionData }, { data: serviceData }] = await Promise.all([
     supabase
-      .from("office_jurisdictions")
-      .select("id, state_name, office_id, is_demo, office:representative_offices(id, name, office_type, source:official_sources(id, name, source_url, verification_status, last_verified_at, is_demo))")
+      .from("layanan_public_offices")
+      .select("id, country_code, name, office_type, source_name, evidence_url")
+      .eq("country_code", "MY")
+      .order("name"),
+    supabase
+      .from("layanan_public_jurisdictions")
+      .select("id, state_name, office_id")
       .eq("country_code", "MY")
       .order("state_name"),
     supabase
-      .from("service_categories")
-      .select("id, name, description, is_demo")
-      .eq("is_active", true)
+      .from("layanan_public_mission_services")
+      .select("office_id, service_category_id, name")
       .order("name"),
   ]);
 
-  const jurisdictions = (jurisdictionData ?? []) as unknown as Jurisdiction[];
-  const services = (serviceData ?? []) as ServiceCategory[];
+  const offices = (officeData ?? []) as PublicOffice[];
+  const officeIds = new Set(offices.map((office) => office.id));
+  const jurisdictions = ((jurisdictionData ?? []) as PublicJurisdiction[])
+    .filter((jurisdiction) => officeIds.has(jurisdiction.office_id));
+  const missionServices = ((serviceData ?? []) as PublicService[])
+    .filter((service) => officeIds.has(service.office_id));
   const selectedJurisdiction = jurisdictions.find((item) => item.id === params.state);
-  const selectedService = services.find((item) => item.id === params.service);
-  let contacts: ContactChannel[] = [];
+  const selectedOffice = offices.find((office) => office.id === selectedJurisdiction?.office_id);
+  const availableServices = missionServices.filter(
+    (service, index, rows) => rows.findIndex(
+      (candidate) => candidate.service_category_id === service.service_category_id,
+    ) === index,
+  );
+  const selectedService = availableServices.find((item) => item.service_category_id === params.service);
+  let contacts: PublicContact[] = [];
 
   if (selectedJurisdiction && selectedService) {
     const { data } = await supabase
-      .from("office_contact_channels")
-      .select("id, channel_type, label, channel_value, verification_status, last_verified_at, is_demo, source:official_sources(id, name, source_url, verification_status, last_verified_at, is_demo)")
+      .from("layanan_public_contact_channels")
+      .select("id, channel_type, label, raw_value, e164_phone, url, last_verified_at, source_name, evidence_url")
       .eq("office_id", selectedJurisdiction.office_id)
-      .eq("service_category_id", selectedService.id)
-      .eq("is_active", true)
-      .order("channel_type");
-    contacts = (data ?? []) as unknown as ContactChannel[];
+      .eq("service_category_id", selectedService.service_category_id)
+      .order("display_order");
+    contacts = (data ?? []) as PublicContact[];
   }
 
   return (
@@ -79,7 +122,7 @@ export default async function ConnectPage({ searchParams }: ConnectPageProps) {
             <label htmlFor="service" className="block text-sm font-semibold text-slate-800">Kategori layanan</label>
             <select id="service" name="service" defaultValue={params.service ?? ""} className="mt-2 min-h-11 w-full rounded-lg border border-slate-300 bg-white px-3" required>
               <option value="" disabled>Pilih layanan</option>
-              {services.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}
+              {availableServices.map((item) => <option key={item.service_category_id} value={item.service_category_id}>{item.name}</option>)}
             </select>
           </div>
           <button type="submit" className="min-h-11 rounded-lg bg-brand-700 px-5 py-3 font-semibold text-white hover:bg-brand-800 sm:col-span-2">Tampilkan kontak</button>
@@ -92,8 +135,8 @@ export default async function ConnectPage({ searchParams }: ConnectPageProps) {
         {selectedJurisdiction && selectedService && (
           <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex flex-wrap items-center gap-3">
-              <h2 className="text-2xl font-bold text-slate-950">{selectedJurisdiction.office?.name}</h2>
-              <VerificationBadge status={selectedJurisdiction.office?.source?.verification_status ?? "unverified"} isDemo={selectedJurisdiction.is_demo || Boolean(selectedJurisdiction.office?.source?.is_demo)} />
+              <h2 className="text-2xl font-bold text-slate-950">{selectedOffice?.name}</h2>
+              <VerificationBadge status="verified" isDemo={false} />
             </div>
             <p className="mt-2 text-slate-600">Wilayah: {selectedJurisdiction.state_name} · Layanan: {selectedService.name}</p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -101,10 +144,10 @@ export default async function ConnectPage({ searchParams }: ConnectPageProps) {
                 const href = contactHref(contact);
                 return (
                   <div key={contact.id} className="rounded-xl border border-slate-200 p-4">
-                    <VerificationBadge status={contact.verification_status} isDemo={contact.is_demo} />
+                    <VerificationBadge status="verified" isDemo={false} />
                     <h3 className="mt-3 font-semibold text-slate-950">{contact.label}</h3>
-                    {href ? <Link href={href} className="mt-2 block break-all text-brand-700 hover:underline">{contact.channel_value}</Link> : <p className="mt-2 break-all text-slate-700">{contact.channel_value}</p>}
-                    {contact.source && <Link href={contact.source.source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-sm font-semibold text-brand-700 hover:underline">Lihat sumber</Link>}
+                    {href ? <Link href={href} className="mt-2 block break-all text-brand-700 hover:underline">{contact.raw_value}</Link> : <p className="mt-2 break-all text-slate-700">{contact.raw_value}</p>}
+                    <Link href={contact.evidence_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-sm font-semibold text-brand-700 hover:underline">Sumber: {contact.source_name}</Link>
                   </div>
                 );
               })}

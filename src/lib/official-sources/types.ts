@@ -38,7 +38,22 @@ export type RegistryOfficialSource = {
   notes: string | null;
 };
 
-export type PublicOfficialSource = Omit<RegistryOfficialSource, "notes">;
+export type PublicOfficialSource = Pick<RegistryOfficialSource,
+  | "id"
+  | "institution_code"
+  | "name"
+  | "unit_name"
+  | "country_code"
+  | "city"
+  | "platform"
+  | "handle"
+  | "source_url"
+  | "official_website"
+  | "verification_level"
+  | "priority"
+  | "category_scope"
+  | "last_verified_at"
+>;
 
 export const verificationLevelLabels: Record<VerificationLevel, string> = {
   A: "Verified",

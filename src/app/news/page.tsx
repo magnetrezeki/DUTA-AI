@@ -2,7 +2,18 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { VerificationBadge } from "@/components/data/verification-badge";
 import { createClient } from "@/lib/supabase/server";
-import type { NewsItem } from "@/lib/day2/types";
+
+type PublicNewsItem = {
+  id: string;
+  title: string;
+  summary: string | null;
+  official_url: string;
+  original_publisher_url: string | null;
+  published_at: string;
+  source_name: string;
+  source_url: string | null;
+  last_verified_at: string;
+};
 
 export const metadata = { title: "DUTA News", description: "Berita dan pengumuman dengan tautan ke sumber resminya." };
 
@@ -11,11 +22,10 @@ export const dynamic = "force-dynamic";
 export default async function NewsPage() {
   const supabase = await createClient();
   const { data } = await supabase
-    .from("news_items")
-    .select("id, title, official_url, summary, published_at, verification_status, last_verified_at, is_demo, source:official_sources(id, name, source_url, verification_status, last_verified_at, is_demo)")
-    .eq("publication_status", "published")
+    .from("news_public_items")
+    .select("id,title,summary,official_url,original_publisher_url,published_at,source_name,source_url,last_verified_at")
     .order("published_at", { ascending: false, nullsFirst: false });
-  const newsItems = (data ?? []) as unknown as NewsItem[];
+  const newsItems = (data ?? []) as PublicNewsItem[];
 
   return (
     <main className="flex-1 py-12">
@@ -28,12 +38,12 @@ export default async function NewsPage() {
         <div className="mt-8 grid gap-5">
           {newsItems.map((item) => (
             <article key={item.id} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-              <VerificationBadge status={item.verification_status} isDemo={item.is_demo} />
+              <VerificationBadge status="verified" isDemo={false} />
               <h2 className="mt-4 text-xl font-bold text-slate-950">{item.title}</h2>
               {item.summary && <p className="mt-3 leading-7 text-slate-600">{item.summary}</p>}
               <div className="mt-4 flex flex-wrap gap-4 text-sm">
                 <Link href={item.official_url} target="_blank" rel="noreferrer" className="font-semibold text-brand-700 hover:underline">Buka URL resmi</Link>
-                {item.source && <Link href={item.source.source_url} target="_blank" rel="noreferrer" className="font-semibold text-slate-600 hover:underline">Sumber: {item.source.name}</Link>}
+                {item.source_url && <Link href={item.source_url} target="_blank" rel="noreferrer" className="font-semibold text-slate-600 hover:underline">Sumber: {item.source_name}</Link>}
               </div>
             </article>
           ))}

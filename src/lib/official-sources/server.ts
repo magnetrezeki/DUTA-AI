@@ -3,16 +3,13 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import type { OfficialSourceCategory, PublicOfficialSource, SourcePlatform } from "./types";
 
-const publicColumns = "id,institution_code,name,unit_name,country_code,city,platform,handle,source_url,official_website,verification_level,registry_status,priority,category_scope,enabled,last_verified_at,last_successful_fetch_at,fetch_method";
+const publicColumns = "id,institution_code,name,unit_name,country_code,city,platform,handle,source_url,official_website,verification_level,priority,category_scope,last_verified_at";
 
 async function enabledQuery() {
   const supabase = await createClient();
   return supabase
-    .from("official_sources")
+    .from("official_sources_public")
     .select(publicColumns)
-    .eq("enabled", true)
-    .eq("registry_status", "VERIFIED")
-    .in("verification_level", ["A", "B"])
     .order("priority")
     .order("name");
 }

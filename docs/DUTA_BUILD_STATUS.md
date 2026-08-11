@@ -1,5 +1,70 @@
 # DUTA AI Build Status
 
+## DUTA News V2 — hosted migration verified, application cutover pending
+
+- Additive News V2 migration manually applied to hosted Supabase from the
+  reviewed `release-preview` revision
+- Existing `official_sources`, `official_source_items`, and `news_items` are extended;
+  no parallel source or article domain model is introduced
+- Exactly seven normalized supporting tables cover controlled categories, source
+  scopes, article categories, editorial reviews, duplicate relationships,
+  integrations, and source-rights assessments
+- Public V2 reads use `news_public_items`, with complete Registry/source/article/
+  provenance/editorial/duplicate parent-chain checks
+- Security-review remediation removed normal-user access to raw `news_items`,
+  `official_sources`, provenance, and editorial tables; authorized administration
+  continues through the existing country-aware RLS mechanism
+- Final policy remediation explicitly removes both historical public-read policies
+  from `official_sources`; the reconstructed final policy set contains only the
+  existing country/platform-admin management policy
+- `/news`, DUTA AI News, and the public Registry helper now use only the curated
+  `news_public_items` and `official_sources_public` readers
+- The compatible application cutover is ready but has not yet been deployed to
+  Vercel Preview
+- `NEWS_URL_CANON_V1`, hard-versus-possible duplicate handling, copyright-safe
+  thumbnail rules, and historical `RESTRICT` foreign keys are included
+- Existing demo News remains preserved but is excluded from the V2 curated reader
+- Canonicalization now rejects credentials, malformed authority, whitespace, and
+  control characters; it preserves path slashes and performs no HTTP-to-HTTPS upgrade
+- A rollback-only hosted PostgreSQL/RLS test is prepared but has not been executed
+- JIM-MYS, publishers, media data, articles, historical backfill, RSS, API, and
+  scraping are not seeded or enabled
+- Hosted migration execution: MANUALLY APPLIED to Supabase
+- Hosted schema and RLS/grant/policy verification: PASS; curated database
+  readers and the compatible application cutover are ready
+- Final blocker remediation validation: 72/72 targeted and 189/189 full tests PASS;
+  the hosted News V2 RLS transaction test remains NOT EXECUTED
+
+Last updated: 11 August 2026
+
+## DUTA Layanan WNI Phase 2 — hosted migration verified, seed pending
+
+- Hosted Day 2 collision diagnostics: PASS; no normalized office, jurisdiction,
+  active-channel, or service-slug collision was reported
+- The unexpected office/source mapping was confirmed as the preserved Day 2 DEMO row
+- Additive operational schema migration prepared without Malaysia operational seed data
+- Existing Registry and Day 2 tables are reused; no competing source, mission,
+  jurisdiction, service taxonomy, or channel table was introduced
+- Evidence-backed publishability, conflict exclusion, historical verification,
+  authenticated reports, country-scoped administration, and RLS are included
+- Phase 2 safety-review blockers were remediated in the reviewed migration before
+  hosted application:
+  no policy drops, no broad anonymous operational-table reads, curated fee-only
+  date-uncertain output, evidence-target constraints, historical jurisdiction
+  preservation with serialized temporal-overlap prevention, complete typed-target
+  indexes, restrictive event history, parent-chain publishability, unique evidence
+  associations, bidirectional event/service lookup coverage, and exclusive curated
+  public reads with direct base-table access restricted to authorized administrators
+- `/connect` and DUTA AI official office/contact tools now use the evidence-backed
+  `layanan_public_*` views instead of Day 2 operational base tables
+- `/connect` compatibility is preserved; `/layanan` application work has not started
+- Hosted migration execution: MANUALLY APPLIED to Supabase
+- Hosted schema verification, hosted RLS verification, and rollback-only hosted
+  transaction verification: PASS; no test rows were left behind
+- Evidence-linked Malaysia operational seed: NOT EXECUTED
+
+Last updated: 11 August 2026
+
 ## DUTA Master Source Registry v1.0 — local implementation
 
 - Existing Day 2 `official_sources` table extended without duplicating the domain model

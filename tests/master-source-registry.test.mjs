@@ -19,9 +19,8 @@ test("registry extends the existing official_sources table and adds only the ing
 
 test("public readers receive enabled verified A or B sources only", () => {
   assert.match(migration, /using \(enabled and registry_status = 'VERIFIED' and verification_level in \('A', 'B'\)\)/);
-  assert.match(dataAccess, /\.eq\("enabled", true\)/);
-  assert.match(dataAccess, /\.eq\("registry_status", "VERIFIED"\)/);
-  assert.match(dataAccess, /\.in\("verification_level", \["A", "B"\]\)/);
+  assert.match(dataAccess, /\.from\("official_sources_public"\)/);
+  assert.doesNotMatch(dataAccess, /\.from\("official_sources"\)/);
 });
 
 test("HOLD and LEGACY sources are disabled and cannot satisfy the enable constraint", () => {

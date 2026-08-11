@@ -19,40 +19,27 @@ function publicTool(
 export const tools: DutaTool[] = [
   publicTool("verified_representative_offices", "representative_office", async ({ countryCode }) => {
     const db = await createClient();
-    const { data } = await db.from("representative_offices")
-      .select("id,name,office_type,last_verified_at,source:official_sources!source_id(name,source_url,verification_status,is_demo)")
-      .eq("country_code", countryCode).eq("verification_status", "verified").eq("is_active", true).eq("is_demo", false).limit(5);
+    const { data } = await db.from("layanan_public_offices")
+      .select("id,name,office_type,last_verified_at,source_name,evidence_url")
+      .eq("country_code", countryCode).limit(5);
     const rows = data ?? [];
     if (!rows.length) return empty("Belum ada kantor perwakilan yang telah diverifikasi untuk ditampilkan.", "/connect");
     return {
       answer: rows.map((row) => `${row.name} (${row.office_type})`).join("\n"),
-      sources: rows.flatMap((row) => {
-        const source = Array.isArray(row.source) ? row.source[0] : row.source;
-        return source && source.verification_status === "verified" && !source.is_demo
-          ? [{ label: source.name, url: source.source_url, verificationStatus: "verified" as const, lastVerifiedAt: row.last_verified_at ?? undefined }]
-          : [];
-      }),
+      sources: rows.map((row) => ({ label: row.source_name, url: row.evidence_url, verificationStatus: "verified" as const, lastVerifiedAt: row.last_verified_at ?? undefined })),
       actions: [{ label: "Lihat DUTA Connect", href: "/connect" }], warnings: [],
     };
   }),
   publicTool("verified_official_contacts", "official_contact", async ({ countryCode, query }) => {
     const db = await createClient();
-    const { data } = await db.from("office_contact_channels")
-      .select("label,channel_type,channel_value,last_verified_at,office:representative_offices!office_id(name,country_code,verification_status,is_demo),source:official_sources!source_id(name,source_url,verification_status,is_demo)")
-      .eq("verification_status", "verified").eq("is_active", true).eq("is_demo", false).limit(8);
-    const rows = (data ?? []).filter((row) => {
-      const office = Array.isArray(row.office) ? row.office[0] : row.office;
-      return office?.country_code === countryCode && office.verification_status === "verified" && !office.is_demo;
-    });
+    const { data } = await db.from("layanan_public_contact_channels")
+      .select("label,channel_type,raw_value,last_verified_at,country_code,source_name,evidence_url")
+      .eq("country_code", countryCode).limit(8);
+    const rows = data ?? [];
     if (!rows.length) return empty("Belum ada kanal kontak resmi yang telah diverifikasi. Gunakan situs resmi, bukan nomor yang tidak bersumber.", "/connect");
     return {
-      answer: rows.map((row) => `${row.label}: ${row.channel_value} (${row.channel_type})`).join("\n"),
-      sources: rows.flatMap((row) => {
-        const source = Array.isArray(row.source) ? row.source[0] : row.source;
-        return source && source.verification_status === "verified" && !source.is_demo
-          ? [{ label: source.name, url: source.source_url, verificationStatus: "verified" as const, lastVerifiedAt: row.last_verified_at ?? undefined }]
-          : [];
-      }),
+      answer: rows.map((row) => `${row.label}: ${row.raw_value} (${row.channel_type})`).join("\n"),
+      sources: rows.map((row) => ({ label: row.source_name, url: row.evidence_url, verificationStatus: "verified" as const, lastVerifiedAt: row.last_verified_at ?? undefined })),
       actions: [{ label: "Periksa layanan dan wilayah", href: `/connect?q=${encodeURIComponent(query.slice(0, 80))}` }], warnings: [],
     };
   }),
@@ -62,14 +49,10 @@ export const tools: DutaTool[] = [
   }),
   publicTool("verified_official_news", "official_news", async () => {
     const db = await createClient();
-    const { data } = await db.from("news_items")
-      .select("id,title,summary,official_url,published_at,last_verified_at,source:official_sources!source_id(name,verification_status,is_demo)")
-      .eq("publication_status", "published").eq("verification_status", "verified").eq("is_demo", false)
+    const { data } = await db.from("news_public_items")
+      .select("id,title,summary,official_url,published_at,last_verified_at,source_name")
       .order("published_at", { ascending: false }).limit(6);
-    const rows = (data ?? []).filter((row) => {
-      const source = Array.isArray(row.source) ? row.source[0] : row.source;
-      return source?.verification_status === "verified" && !source.is_demo;
-    });
+    const rows = data ?? [];
     if (!rows.length) return empty("Belum ada berita resmi terverifikasi untuk ditampilkan.", "/news");
     return { answer: rows.map((row) => row.title).join("\n"), sources: rows.map((row) => ({ label: row.title, url: row.official_url, verificationStatus: "verified" as const, lastVerifiedAt: row.last_verified_at ?? undefined })), actions: [{ label: "Buka DUTA News", href: "/news" }], warnings: [] };
   }),
