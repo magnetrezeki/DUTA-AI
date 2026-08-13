@@ -37,6 +37,42 @@
 
 Last updated: 11 August 2026
 
+## DUTA News V2 — Group A/B hosted; Group C seed prepared locally
+
+- Source-only seed prepared for exactly 22 existing verified Indonesian mission
+  channels in Malaysia; legacy aliases, attaché channels, demo sources, and unrelated
+  Registry records are excluded
+- Source-only seed prepared for three product-approved and technically validated
+  Jabatan Imigresen Malaysia channels: official website, Facebook, and Instagram
+- JIM uses deterministic Registry identities and records 11 August 2026 only as
+  DUTA's source review/verification date
+- All automatic ingestion remains fail-closed: RSS, API, scraping, credentials,
+  cron jobs, workers, and `news_ingestion_authorized` remain disabled
+- No article, `official_source_items`, thumbnail-rights assessment, or historical
+  backfill is included
+- Separate read-only hosted JIM collision diagnostic prepared
+- Group A hosted source-only seed: COMPLETE and verified at 22/22
+- Group B hosted source-only seed: COMPLETE and verified at 3/3
+- Group C hosted collision diagnostic: PASS at 26/26 with no collision found
+- Group C regional-media source-only seed: PREPARED LOCALLY, NOT EXECUTED
+- Group C's first hosted execution attempt was rejected safely because the country
+  master lacked Indonesia (`ID`); the explicit transaction left no approved seed
+  completion to record
+- A separate deterministic Indonesia country master-data seed is PREPARED LOCALLY,
+  NOT EXECUTED, with `is_active = false` so Malaysia remains the only active rollout
+  country while the Group C foreign-key dependency can be satisfied after approval
+- A separate SELECT-only hosted Indonesia/Malaysia collision diagnostic is prepared
+- A country-admin self-scope escalation was identified before country-seed execution;
+  an additive database-trigger hardening migration and rollback-only hosted RLS test
+  are PREPARED LOCALLY and NOT EXECUTED. The fix blocks a `country_admin` from
+  changing their own authorization country while preserving ordinary profile edits
+- Group C uses deterministic identities, exact reviewed canonical URLs, and the
+  frozen `MEDIA` / `INDONESIAN_MEDIA` / Indonesia-region classifications
+- Group C ingestion remains disabled: no RSS, API, scraping, automatic integration,
+  article rows, or image-rights escalation is included
+
+Last updated: 11 August 2026
+
 ## DUTA Layanan WNI Phase 2 — hosted migration verified, seed pending
 
 - Hosted Day 2 collision diagnostics: PASS; no normalized office, jurisdiction,
@@ -301,3 +337,59 @@ Completed on 8 August 2026:
 
 The product owner must approve the next development phase before feature or
 service integration work begins.
+
+## DUTA News V2 Phase 2E local JIM RSS preparation
+
+- Local-only, single-endpoint JIM RSS fetch-security contract prepared for
+  `https://www.imi.gov.my/index.php/feed/`; it performs no live request by itself.
+- HTTPS, exact host/path/port, DNS/IP, redirect, timeout, MIME, charset, compression,
+  payload-size, XML-depth, item-count, and field-size controls are fail-closed.
+- RSS/Atom candidates stop at `FETCHED`; no Supabase write, publishing, thumbnail,
+  AI tool access, worker grant, cron, or automatic polling path was added.
+- Deterministic local fixtures cover valid and hostile feeds, sanitization,
+  duplicate identities, unsafe destinations, and prompt-injection text as inert data.
+- JIM terms review remains REQUIRED; `news_ingestion_authorized=false`, no JIM
+  integration exists, and no one-time live fetch is authorized.
+- Phase 2E-R1 adds a concrete DNS-pinned Node HTTPS transport, manual fail-closed
+  redirect handling, bounded wire/decompression streams, active request/socket
+  timeouts, frozen canonicalization parity, and reachable review-only fingerprint
+  identity. It remains local and inactive pending independent security re-review.
+- Phase 2E-R3 hardens the pinned Node lookup contract (including `all: true` and
+  deterministic address-family selection), centralizes terminal resource cleanup,
+  replaces regex structural XML parsing with a bounded fail-closed tokenizer, and
+  adds local-only TLS/runtime and XML structural proof. No live fetch or integration
+  authorization was added; the independent R3 review and terms review remain required.
+- Phase 2E-R5 removes caller-controlled security overrides from the fixed production
+  fetch entry point, isolates the reusable lifecycle core, generates ephemeral TLS
+  certificates only during local tests, and strengthens XML well-formedness,
+  namespace, RSS/Atom structure, Atom-link semantics, and parse-time resource limits.
+  Live fetching and ingestion remain unauthorized pending final independent review
+  and the separate terms review.
+- Phase 2E-R7 inlines the security-sensitive transport core as non-exported production
+  implementation, moves injectable lifecycle support entirely under tests, adds
+  behavioral late-error and listener-retirement coverage, and closes the remaining
+  XML character-data and reserved-namespace gaps. Live fetching, integration creation,
+  and ingestion authorization remain prohibited pending independent review and terms.
+- Phase 2E-R9 removes the duplicated test transport lifecycle. Local behavioral tests
+  now execute a temporary instrumented build of the exact production transport source,
+  while the repository's production API continues to export only the fixed JIM fetch.
+  Post-settlement error absorbers remain attached until request, socket, response, and
+  decompressor close state makes removal safe; repeated local TLS runs verify eventual
+  listener retirement and exactly-once settlement. No external request, hosted change,
+  integration creation, or ingestion authorization was performed; terms review remains
+  required before any separately approved one-time live dry fetch can be designed.
+- Phase 2E-R11 adds test-only controlled resources and timers around the same temporary
+  production-source build. Deterministic tests now hold request, socket, response, and
+  decompressor resources open across event-loop turns, inject mandatory late errors,
+  close each resource, and prove absorber removal. Controlled connection/timeout races
+  and twelve repeated lifecycle runs verify exactly-once settlement with no retained
+  error listeners, timers, streams, or sockets. These controls are absent from production
+  exports; live fetching and ingestion remain unauthorized pending terms review.
+- Phase 2E-R13 makes the controlled Node lifecycle asynchronous and independently
+  tracks every owned request, socket, response stream, decompressor, timer, and error
+  listener. Deterministic tests cover both connect/overall-timeout orderings, two-hop
+  redirect/timeout ordering, both response/decompressor-error orderings, and stale
+  callbacks fired during a later operation. Twelve naturally closing runs return the
+  global owned-resource registry exactly to baseline without forced cleanup. Production
+  exports remain unchanged; terms review and explicit approval are still required before
+  any live request, integration creation, or ingestion authorization.

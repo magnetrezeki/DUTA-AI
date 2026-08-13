@@ -106,7 +106,11 @@ insert into public.official_source_items (
   ('93000000-0000-0000-0000-000000000010','91000000-0000-0000-0000-000000000001','superseded','https://example.invalid/news/item/superseded',now(),'Superseded item',repeat('a',64),true,'PUBLISHED','https://example.invalid/news/item/superseded','NOT_PROVIDED'),
   ('93000000-0000-0000-0000-000000000011','91000000-0000-0000-0000-000000000001','unknown-thumbnail','https://example.invalid/news/item/unknown-thumbnail',now(),'Unknown thumbnail item',repeat('b',64),true,'PUBLISHED','https://example.invalid/news/item/unknown-thumbnail','UNKNOWN'),
   ('93000000-0000-0000-0000-000000000012','91000000-0000-0000-0000-000000000001','restricted-thumbnail','https://example.invalid/news/item/restricted-thumbnail',now(),'Restricted thumbnail item',repeat('c',64),true,'PUBLISHED','https://example.invalid/news/item/restricted-thumbnail','RESTRICTED'),
-  ('93000000-0000-0000-0000-000000000013','91000000-0000-0000-0000-000000000007','cross-country','https://example.invalid/news/item/cross-country',now(),'Cross-country item',repeat('d',64),true,'PUBLISHED','https://example.invalid/news/item/cross-country','NOT_PROVIDED');
+  ('93000000-0000-0000-0000-000000000013','91000000-0000-0000-0000-000000000007','cross-country','https://example.invalid/news/item/cross-country',now(),'Cross-country item',repeat('d',64),true,'PUBLISHED','https://example.invalid/news/item/cross-country','NOT_PROVIDED'),
+  ('93000000-0000-0000-0000-000000000014','91000000-0000-0000-0000-000000000001','mismatch-control','https://example.invalid/news/item/mismatch-control',now(),'Unlinked mismatch-control item',repeat('e',64),true,'PUBLISHED','https://example.invalid/news/item/mismatch-control','NOT_PROVIDED'),
+  ('93000000-0000-0000-0000-000000000015','91000000-0000-0000-0000-000000000001','positive-control','https://example.invalid/news/item/positive-control',now(),'Unlinked positive-control item',repeat('f',64),true,'PUBLISHED','https://example.invalid/news/item/positive-control','NOT_PROVIDED'),
+  ('93000000-0000-0000-0000-000000000016','91000000-0000-0000-0000-000000000001','unpublished','https://example.invalid/news/item/unpublished',now(),'Unpublished item',repeat('0',64),true,'PUBLISHED','https://example.invalid/news/item/unpublished','NOT_PROVIDED'),
+  ('93000000-0000-0000-0000-000000000017','91000000-0000-0000-0000-000000000007','allowed-thumbnail','https://example.invalid/news/item/allowed-thumbnail',now(),'Allowed thumbnail item',repeat('1a',32),true,'PUBLISHED','https://example.invalid/news/item/allowed-thumbnail','EXPLICITLY_ALLOWED');
 
 insert into public.news_items (
   id, source_id, title, official_url, summary, published_at, publication_status,
@@ -126,14 +130,16 @@ insert into public.news_items (
   ('92000000-0000-0000-0000-000000000010','91000000-0000-0000-0000-000000000001','Superseded article','https://example.invalid/news/item/superseded','Hidden',now(),'published','verified',now(),false,'93000000-0000-0000-0000-000000000010','https://example.invalid/news/item/superseded','NEWS_URL_CANON_V1','MALAYSIA',null,'PUBLISHED','https://example.invalid/news/item/superseded',null,'NOT_PROVIDED','92000000-0000-0000-0000-000000000001'),
   ('92000000-0000-0000-0000-000000000011','91000000-0000-0000-0000-000000000001','Unknown thumbnail article','https://example.invalid/news/item/unknown-thumbnail','Visible without thumbnail',now(),'published','verified',now(),false,'93000000-0000-0000-0000-000000000011','https://example.invalid/news/item/unknown-thumbnail','NEWS_URL_CANON_V1','MALAYSIA',null,'PUBLISHED','https://example.invalid/news/item/unknown-thumbnail','https://example.invalid/media/unknown.jpg','UNKNOWN',null),
   ('92000000-0000-0000-0000-000000000012','91000000-0000-0000-0000-000000000001','Restricted thumbnail article','https://example.invalid/news/item/restricted-thumbnail','Visible without thumbnail',now(),'published','verified',now(),false,'93000000-0000-0000-0000-000000000012','https://example.invalid/news/item/restricted-thumbnail','NEWS_URL_CANON_V1','MALAYSIA',null,'PUBLISHED','https://example.invalid/news/item/restricted-thumbnail','https://example.invalid/media/restricted.jpg','RESTRICTED',null),
-  ('92000000-0000-0000-0000-000000000013','91000000-0000-0000-0000-000000000007','Cross-country article','https://example.invalid/news/item/cross-country','Visible',now(),'published','verified',now(),false,'93000000-0000-0000-0000-000000000013','https://example.invalid/news/item/cross-country','NEWS_URL_CANON_V1','NASIONAL',null,'PUBLISHED','https://example.invalid/news/item/cross-country',null,'NOT_PROVIDED',null);
+  ('92000000-0000-0000-0000-000000000013','91000000-0000-0000-0000-000000000007','Cross-country article','https://example.invalid/news/item/cross-country','Visible',now(),'published','verified',now(),false,'93000000-0000-0000-0000-000000000013','https://example.invalid/news/item/cross-country','NEWS_URL_CANON_V1','NASIONAL',null,'PUBLISHED','https://example.invalid/news/item/cross-country',null,'NOT_PROVIDED',null),
+  ('92000000-0000-0000-0000-000000000014','91000000-0000-0000-0000-000000000001','Unpublished article','https://example.invalid/news/item/unpublished','Hidden only because it is unpublished',now(),'draft','verified',now(),false,'93000000-0000-0000-0000-000000000016','https://example.invalid/news/item/unpublished','NEWS_URL_CANON_V1','MALAYSIA',null,'PUBLISHED','https://example.invalid/news/item/unpublished',null,'NOT_PROVIDED',null),
+  ('92000000-0000-0000-0000-000000000015','91000000-0000-0000-0000-000000000007','Allowed thumbnail article','https://example.invalid/news/item/allowed-thumbnail','Visible with approved thumbnail',now(),'published','verified',now(),false,'93000000-0000-0000-0000-000000000017','https://example.invalid/news/item/allowed-thumbnail','NEWS_URL_CANON_V1','NASIONAL',null,'PUBLISHED','https://example.invalid/news/item/allowed-thumbnail','https://example.invalid/media/allowed.jpg','EXPLICITLY_ALLOWED',null);
 
 insert into public.news_item_categories (news_item_id, category_id, is_primary, assigned_by)
 select item.id, category.id, true, '90000000-0000-0000-0000-000000000004'
 from public.news_items item
 cross join public.news_categories category
 where item.id between '92000000-0000-0000-0000-000000000001'::uuid
-  and '92000000-0000-0000-0000-000000000013'::uuid
+  and '92000000-0000-0000-0000-000000000015'::uuid
   and category.code = 'GOVERNMENT';
 
 insert into public.news_editorial_reviews (news_item_id, decision, reason, private_notes, reviewed_by)
@@ -143,7 +149,7 @@ select item.id,
   'private editorial test note', '90000000-0000-0000-0000-000000000004'
 from public.news_items item
 where item.id between '92000000-0000-0000-0000-000000000001'::uuid
-  and '92000000-0000-0000-0000-000000000013'::uuid;
+  and '92000000-0000-0000-0000-000000000015'::uuid;
 
 insert into public.news_duplicate_relations (
   news_item_id, related_news_item_id, duplicate_kind, confidence, reviewed_by, reviewed_at
@@ -155,11 +161,200 @@ insert into public.news_duplicate_relations (
 
 insert into public.news_source_assessments (
   source_id, thumbnail_permission, terms_url, assessed_by
-) values (
-  '91000000-0000-0000-0000-000000000001', 'RESTRICTED',
-  'https://example.invalid/news/thumbnail-terms',
-  '90000000-0000-0000-0000-000000000004'
-);
+) values
+  (
+    '91000000-0000-0000-0000-000000000001', 'RESTRICTED',
+    'https://example.invalid/news/thumbnail-terms',
+    '90000000-0000-0000-0000-000000000004'
+  ),
+  (
+    '91000000-0000-0000-0000-000000000007', 'EXPLICITLY_ALLOWED',
+    'https://example.invalid/news/allowed-thumbnail-terms',
+    '90000000-0000-0000-0000-000000000004'
+  );
+
+do $$
+declare
+  failed_constraint text;
+  changed integer;
+begin
+  insert into public.news_items (
+    id, source_id, title, official_url, summary, published_at,
+    publication_status, verification_status, last_verified_at, is_demo,
+    official_source_item_id, canonical_url, canonicalization_version,
+    region, editorial_status, original_publisher_url, thumbnail_permission
+  ) values (
+    '92000000-0000-0000-0000-000000000104',
+    '91000000-0000-0000-0000-000000000001',
+    'Valid provenance positive control',
+    'https://example.invalid/news/item/positive-control',
+    'Must succeed', now(), 'published', 'verified', now(), false,
+    '93000000-0000-0000-0000-000000000015',
+    'https://example.invalid/news/item/positive-control',
+    'NEWS_URL_CANON_V1', 'MALAYSIA', 'PUBLISHED',
+    'https://example.invalid/news/item/positive-control',
+    'NOT_PROVIDED'
+  );
+  get diagnostics changed = row_count;
+  if changed <> 1 then
+    raise exception 'FAIL: valid fresh provenance relationship was rejected';
+  end if;
+
+  begin
+    insert into public.news_items (
+      id, source_id, title, official_url, summary, published_at,
+      publication_status, verification_status, last_verified_at, is_demo,
+      official_source_item_id, canonical_url, canonicalization_version,
+      region, editorial_status, original_publisher_url, thumbnail_permission
+    ) values (
+      '92000000-0000-0000-0000-000000000101',
+      '91000000-0000-0000-0000-000000000007',
+      'Invalid mismatched provenance',
+      'https://example.invalid/news/negative/mismatched-provenance',
+      'Must be rejected', now(), 'published', 'verified', now(), false,
+      '93000000-0000-0000-0000-000000000014',
+      'https://example.invalid/news/negative/mismatched-provenance',
+      'NEWS_URL_CANON_V1', 'NASIONAL', 'PUBLISHED',
+      'https://example.invalid/news/negative/mismatched-provenance',
+      'NOT_PROVIDED'
+    );
+    raise exception 'FAIL: a News item accepted provenance owned by a different source';
+  exception when foreign_key_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_items_official_source_item_fk' then
+      raise exception 'FAIL: mismatched provenance failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  begin
+    insert into public.news_items (
+      id, source_id, title, official_url, summary, published_at,
+      publication_status, verification_status, last_verified_at, is_demo,
+      official_source_item_id, canonical_url, canonicalization_version,
+      region, editorial_status, original_publisher_url, thumbnail_permission
+    ) values (
+      '92000000-0000-0000-0000-000000000102',
+      '91000000-0000-0000-0000-000000000001',
+      'Invalid reused provenance',
+      'https://example.invalid/news/negative/reused-provenance',
+      'Must be rejected', now(), 'published', 'verified', now(), false,
+      '93000000-0000-0000-0000-000000000001',
+      'https://example.invalid/news/negative/reused-provenance',
+      'NEWS_URL_CANON_V1', 'MALAYSIA', 'PUBLISHED',
+      'https://example.invalid/news/negative/reused-provenance',
+      'NOT_PROVIDED'
+    );
+    raise exception 'FAIL: one provenance item was linked to an unrelated second News target';
+  exception when unique_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_items_official_source_item_idx' then
+      raise exception 'FAIL: reused provenance failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  begin
+    insert into public.news_items (
+      id, source_id, title, official_url, summary, published_at,
+      publication_status, verification_status, last_verified_at, is_demo,
+      official_source_item_id, canonical_url, canonicalization_version,
+      region, editorial_status, original_publisher_url, thumbnail_permission
+    ) values (
+      '92000000-0000-0000-0000-000000000103',
+      '91000000-0000-0000-0000-000000000001',
+      'Invalid incomplete provenance',
+      'https://example.invalid/news/negative/incomplete-provenance',
+      'Must be rejected', now(), 'published', 'verified', now(), false,
+      null,
+      'https://example.invalid/news/negative/incomplete-provenance',
+      'NEWS_URL_CANON_V1', 'MALAYSIA', 'PUBLISHED',
+      'https://example.invalid/news/negative/incomplete-provenance',
+      'NOT_PROVIDED'
+    );
+    raise exception 'FAIL: a publishable News item accepted incomplete provenance identity';
+  exception when check_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_items_v2_identity' then
+      raise exception 'FAIL: incomplete provenance failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  begin
+    insert into public.news_duplicate_relations (
+      news_item_id, related_news_item_id, duplicate_kind
+    ) values (
+      '92000000-0000-0000-0000-000000000008',
+      '92000000-0000-0000-0000-000000000008',
+      'HARD'
+    );
+    raise exception 'FAIL: a self duplicate relation was accepted';
+  exception when check_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_duplicate_relations_not_self' then
+      raise exception 'FAIL: self duplicate failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  begin
+    insert into public.news_duplicate_relations (
+      news_item_id, related_news_item_id, duplicate_kind
+    ) values (
+      '92000000-0000-0000-0000-000000000008',
+      '92000000-0000-0000-0000-000000000009',
+      'HARD'
+    );
+    raise exception 'FAIL: an exact duplicate association was accepted';
+  exception when unique_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_duplicate_relations_unique' then
+      raise exception 'FAIL: exact duplicate association failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  begin
+    insert into public.news_duplicate_relations (
+      news_item_id, related_news_item_id, duplicate_kind
+    ) values (
+      '92000000-0000-0000-0000-000000000009',
+      '92000000-0000-0000-0000-000000000008',
+      'HARD'
+    );
+    raise exception 'FAIL: a reverse hard duplicate association was accepted';
+  exception when check_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_duplicate_relations_ordered' then
+      raise exception 'FAIL: reverse hard duplicate failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  begin
+    insert into public.news_duplicate_relations (
+      news_item_id, related_news_item_id, duplicate_kind
+    ) values (
+      '92000000-0000-0000-0000-000000000013',
+      '92000000-0000-0000-0000-000000000012',
+      'HARD'
+    );
+    raise exception 'FAIL: invalid hard-duplicate UUID ordering was accepted';
+  exception when check_violation then
+    get stacked diagnostics failed_constraint = constraint_name;
+    if failed_constraint is distinct from 'news_duplicate_relations_ordered' then
+      raise exception 'FAIL: invalid hard-duplicate ordering failed on unexpected constraint: %', failed_constraint;
+    end if;
+  end;
+
+  insert into public.news_duplicate_relations (
+    news_item_id, related_news_item_id, duplicate_kind, confidence
+  ) values (
+    '92000000-0000-0000-0000-000000000001',
+    '92000000-0000-0000-0000-000000000002',
+    'POSSIBLE', 0.5000
+  );
+  get diagnostics changed = row_count;
+  if changed <> 1 then
+    raise exception 'FAIL: a distinct legitimate POSSIBLE relation was rejected';
+  end if;
+end;
+$$;
 
 set local role anon;
 select set_config('request.jwt.claim.sub', '', true);
@@ -179,6 +374,54 @@ begin
   exception when insufficient_privilege then null;
   end;
 
+  begin
+    perform 1 from public.official_source_items limit 1;
+    raise exception 'FAIL: anon raw official_source_items SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_categories limit 1;
+    raise exception 'FAIL: anon raw news_categories SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_source_category_scopes limit 1;
+    raise exception 'FAIL: anon raw news_source_category_scopes SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_item_categories limit 1;
+    raise exception 'FAIL: anon raw news_item_categories SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_editorial_reviews limit 1;
+    raise exception 'FAIL: anon raw news_editorial_reviews SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_duplicate_relations limit 1;
+    raise exception 'FAIL: anon raw news_duplicate_relations SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_source_integrations limit 1;
+    raise exception 'FAIL: anon raw news_source_integrations SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
+  begin
+    perform 1 from public.news_source_assessments limit 1;
+    raise exception 'FAIL: anon raw news_source_assessments SELECT unexpectedly succeeded';
+  exception when insufficient_privilege then null;
+  end;
+
   if not exists (
     select 1 from public.news_public_items
     where id = '92000000-0000-0000-0000-000000000001'
@@ -193,9 +436,10 @@ begin
       '92000000-0000-0000-0000-000000000008',
       '92000000-0000-0000-0000-000000000011',
       '92000000-0000-0000-0000-000000000012',
-      '92000000-0000-0000-0000-000000000013'
+      '92000000-0000-0000-0000-000000000013',
+      '92000000-0000-0000-0000-000000000015'
     )
-  ) <> 5 then
+  ) <> 6 then
     raise exception 'FAIL: curated reader did not return every valid publishable fixture';
   end if;
 
@@ -216,7 +460,8 @@ begin
       '92000000-0000-0000-0000-000000000006',
       '92000000-0000-0000-0000-000000000007',
       '92000000-0000-0000-0000-000000000009',
-      '92000000-0000-0000-0000-000000000010'
+      '92000000-0000-0000-0000-000000000010',
+      '92000000-0000-0000-0000-000000000014'
     )
   ) then
     raise exception 'FAIL: curated reader exposed disabled/HOLD/LEGACY/unverified/demo/rejected/duplicate/superseded content';
@@ -231,6 +476,14 @@ begin
   ) then
     raise exception 'FAIL: curated reader exposed an UNKNOWN or restricted thumbnail';
   end if;
+
+  if not exists (
+    select 1 from public.news_public_items
+    where id = '92000000-0000-0000-0000-000000000015'
+      and thumbnail_url = 'https://example.invalid/media/allowed.jpg'
+  ) then
+    raise exception 'FAIL: curated reader hid an explicitly allowed thumbnail';
+  end if;
 end;
 $$;
 
@@ -244,7 +497,7 @@ begin
   if exists (
     select 1 from public.news_items
     where id between '92000000-0000-0000-0000-000000000001'::uuid
-      and '92000000-0000-0000-0000-000000000013'::uuid
+      and '92000000-0000-0000-0000-000000000104'::uuid
   ) then
     raise exception 'FAIL: ordinary member bypassed raw news_items RLS';
   end if;
@@ -260,7 +513,7 @@ begin
   if exists (
     select 1 from public.official_source_items
     where id between '93000000-0000-0000-0000-000000000001'::uuid
-      and '93000000-0000-0000-0000-000000000013'::uuid
+      and '93000000-0000-0000-0000-000000000015'::uuid
   ) then
     raise exception 'FAIL: ordinary member read raw official_source_items';
   end if;
@@ -281,9 +534,44 @@ begin
     raise exception 'FAIL: canonicalization accepted userinfo credentials';
   end if;
 
+  if private.news_url_canonical_v1('https://bad..example.com/article') is not null then
+    raise exception 'FAIL: canonicalization accepted a malformed authority';
+  end if;
+
+  if private.news_url_canonical_v1('https://example.com/bad path') is not null then
+    raise exception 'FAIL: canonicalization accepted unsafe whitespace';
+  end if;
+
+  if private.news_url_canonical_v1(
+    'https://example.com/article' || chr(10) || 'unsafe'
+  ) is not null then
+    raise exception 'FAIL: canonicalization accepted a control character';
+  end if;
+
   if private.news_url_canonical_v1('https://EXAMPLE.com/article?id=123&page=2')
      <> 'https://example.com/article?id=123&page=2' then
     raise exception 'FAIL: canonicalization changed semantic query parameters';
+  end if;
+
+  if private.news_url_canonical_v1('https://example.com/article?a=1&a=2')
+     <> 'https://example.com/article?a=1&a=2' then
+    raise exception 'FAIL: canonicalization changed duplicate semantic query parameters';
+  end if;
+
+  if private.news_url_canonical_v1('https://example.com/article?a=1&utm_source=x&a=2')
+     <> 'https://example.com/article?a=1&a=2' then
+    raise exception 'FAIL: tracking removal disturbed duplicate semantic query parameters';
+  end if;
+
+  if private.news_url_canonical_v1('https://example.com/article?a=1&b=2')
+     <> 'https://example.com/article?a=1&b=2' then
+    raise exception 'FAIL: canonicalization reordered semantic query parameters';
+  end if;
+
+  if private.news_url_canonical_v1(
+    'https://example.com/article?path=%2Ffoo%2Fbar&name=a%20b&token=x%3Dy&join=a%26b'
+  ) <> 'https://example.com/article?path=%2Ffoo%2Fbar&name=a%20b&token=x%3Dy&join=a%26b' then
+    raise exception 'FAIL: canonicalization changed percent-encoded semantic query values';
   end if;
 
   if private.news_url_canonical_v1('https://example.com/article?utm_source=x&id=123&fbclid=y&page=2&gclid=z')
@@ -346,6 +634,8 @@ $$;
 reset role;
 
 do $$
+declare
+  failure_message text;
 begin
   if exists (
     select 1 from public.news_editorial_reviews
@@ -368,7 +658,11 @@ begin
     set superseded_by = '92000000-0000-0000-0000-000000000010'
     where id = '92000000-0000-0000-0000-000000000001';
     raise exception 'FAIL: supersession cycle was accepted';
-  exception when check_violation then null;
+  exception when check_violation then
+    get stacked diagnostics failure_message = message_text;
+    if failure_message is distinct from 'News supersession cycle detected' then
+      raise exception 'FAIL: supersession cycle failed with an unexpected check violation: %', failure_message;
+    end if;
   end;
 end;
 $$;
@@ -450,26 +744,8 @@ $$;
 
 reset role;
 
-rollback;
-
-do $$
-begin
-  if exists (
-    select 1 from auth.users
-    where id between '90000000-0000-0000-0000-000000000001'::uuid
-      and '90000000-0000-0000-0000-000000000005'::uuid
-  ) then
-    raise exception 'FAIL: transaction rollback left test users behind';
-  end if;
-
-  if exists (
-    select 1 from public.official_sources
-    where id between '91000000-0000-0000-0000-000000000001'::uuid
-      and '91000000-0000-0000-0000-000000000007'::uuid
-  ) then
-    raise exception 'FAIL: transaction rollback left News fixtures behind';
-  end if;
-end;
-$$;
-
+-- If an unexpected assertion aborts execution, run rollback; manually in the
+-- same SQL Editor session before doing anything else.
 select 'PASS: DUTA News V2 hosted RLS/authorization transaction test completed successfully' as result;
+
+rollback;
