@@ -393,3 +393,95 @@ service integration work begins.
   global owned-resource registry exactly to baseline without forced cleanup. Production
   exports remain unchanged; terms review and explicit approval are still required before
   any live request, integration creation, or ingestion authorization.
+
+## Product-wide UI-1 local implementation
+
+- Design System V2 and App Shell V2 are implemented locally on `release-preview`.
+- Semantic visual tokens, typography, shared buttons/cards/forms/badges/alerts,
+  page headings, feedback states, and trust-state conventions are available for
+  subsequent page redesign phases.
+- Desktop navigation and the mobile overlay navigation now share the DUTA module
+  architecture; the mobile menu includes backdrop dismissal, Escape handling,
+  background scroll prevention, focus restoration, and accessible expanded state.
+- Representative public, authentication, application, and protected-route layouts
+  were checked at mobile, tablet, and desktop widths without horizontal overflow.
+- Full authorization/regression tests, lint, typecheck, and production build pass.
+- UI-1 changes are local and uncommitted; business logic, database schema, RLS,
+  hosted data, JIM integration, and ingestion authorization remain unchanged.
+
+## Product-wide UI-2 local implementation
+
+- Home now presents DUTA's Malaysia-first utility, core modules, trust layers,
+  DUTA AI entry point, and clear registration/login actions without adding
+  unsupported product claims.
+- Dashboard now prioritizes DUTA AI, official services, and career actions while
+  using only the authenticated profile, owned career counts, approved organization
+  memberships, and curated public News data. Empty data receives an honest next step.
+- DUTA AI now provides supported prompt suggestions, a mobile-safe composer,
+  intentional loading/error/empty states, readable answers, and distinct verified,
+  curated, community, and AI trust labels. It remains read-only and explicitly
+  identifies AI output as non-governmental synthesis.
+- Home and DUTA AI were visually checked at 390px, 768px, and 1440px without
+  horizontal overflow or browser runtime errors. Unauthenticated Dashboard access
+  continues to redirect safely to login.
+- Full 289-test regression, lint, typecheck, and production build pass. UI-2 remains
+  local and uncommitted; business logic, database, RLS, hosted data, JIM integration,
+  and ingestion authorization remain unchanged.
+
+## Product-wide UI-3 local implementation
+
+- Connect now leads with a compact location-and-service finder and presents the
+  resulting office, jurisdiction, service, contacts, and provenance in task order.
+  Contact actions are emitted only from curated values that actually exist.
+- News now presents one consistent multi-source newsfeed model. Supported discovery
+  modes cover latest items, government sources, and Malaysia; the existing region,
+  category, and source-type filters remain data-driven.
+- Every rendered News item preserves its publisher identity, source type, verification
+  level, publication time, region, category, summary, and external source path. The UI
+  does not claim that all sources are governmental or official.
+- Remote publisher images are not fetched automatically. Existing News V2 thumbnail
+  permission, curated-reader, copyright, and ingestion boundaries remain unchanged.
+- Connect and News were rendered at 390px, 768px, and 1440px without horizontal
+  overflow or runtime errors. Home and DUTA AI remain visually intact; unauthenticated
+  Dashboard access continues to redirect to login.
+- Targeted Connect/Layanan/News tests (97), the full 289-test regression, lint,
+  typecheck, and production build pass. UI-3 remains local and uncommitted; database,
+  RLS, hosted data, JIM fetch, integration, and ingestion authorization are unchanged.
+
+## Product-wide UI-4 local implementation
+
+- Career now presents a clear job-search journey with data-backed filters, prominent
+  source and verification context, saved/application/alert/Passport navigation, and
+  honest empty and unavailable states.
+- Employer and organization administration retain their existing server-side access
+  controls while gaining consistent workspace navigation and responsive loading/error
+  boundaries. No employer, application, organization, or role behavior changed.
+- Organizations now provides a structured community-discovery experience with explicit
+  verification context, readable filters, submission guidance, and honest empty states.
+- Map now provides a responsive community-place directory with accessible search and
+  category controls, clear trust framing, and preserved user-initiated location behavior.
+  It never requests precise location automatically.
+- Career, Organizations, and Map use shared module navigation, loading, and error
+  patterns. Unauthenticated protected routes continue to redirect safely to login.
+- Targeted Career/Organizations/Map security tests (30), the full 289-test regression,
+  lint, typecheck, and production build pass. UI-4 remains local and uncommitted;
+  business logic, database schema, RLS, hosted data, JIM integration, and ingestion
+  authorization remain unchanged.
+
+## Product-wide UI-5 local implementation
+
+- Login, registration, password recovery, and password update now share a mature DUTA
+  account experience with clear trust guidance, accessible password visibility controls,
+  preserved safe messages, and consistent loading/error boundaries.
+- Onboarding now groups only its two existing profile fields into a guided final setup
+  experience. No additional personal data, mandatory requirement, or profile behavior
+  was introduced.
+- Platform administration now has a distinct high-density operational identity, persistent
+  module navigation, an improved module overview, standardized operational forms, and
+  consistent loading/error boundaries. Existing server authorization remains the gate.
+- Product-wide visual consistency was reviewed across the public App Shell, authentication,
+  core modules, module navigation, feedback states, and representative protected entry
+  points. Protected content was not bypassed for visual inspection.
+- UI-5 remains local and uncommitted. Authentication logic, authorization, business logic,
+  database schema, migrations, RLS, hosted Supabase, JIM integration, and ingestion
+  authorization remain unchanged.

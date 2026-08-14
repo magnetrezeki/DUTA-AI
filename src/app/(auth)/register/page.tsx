@@ -3,6 +3,8 @@ import { register } from "@/app/(auth)/actions";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Field, FormNotice } from "@/components/auth/form-elements";
 import { RegistrationSubmitButton } from "@/components/auth/registration-submit-button";
+import { PasswordField } from "@/components/auth/password-field";
+import { Alert } from "@/components/ui/alert";
 
 type RegisterPageProps = {
   searchParams: Promise<{ error?: string }>;
@@ -24,19 +26,19 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
   const params = await searchParams;
 
   return (
-    <AuthShell title="Buat akun baru" description="Gunakan halaman ini hanya jika Anda belum memiliki akun DUTA AI.">
+    <AuthShell title="Mulai bersama DUTA" description="Buat satu akun untuk mengakses layanan, komunitas, dan perjalanan karier yang relevan.">
       <div className="space-y-5">
         {params.error && errorMessages[params.error] && (
           <FormNotice tone="error">{errorMessages[params.error]}</FormNotice>
         )}
-        <p className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900">
+        <Alert tone="information">
           User A dan User B yang sudah dibuat harus masuk melalui halaman Masuk,
           bukan mendaftar kembali.
-        </p>
+        </Alert>
         <form action={register} className="space-y-5">
           <Field id="displayName" name="displayName" label="Nama lengkap" autoComplete="name" minLength={2} maxLength={100} required />
           <Field id="email" name="email" type="email" label="Email" autoComplete="email" required />
-          <Field id="password" name="password" type="password" label="Kata sandi" autoComplete="new-password" minLength={8} required />
+          <PasswordField id="password" name="password" label="Kata sandi" autoComplete="new-password" minLength={8} required />
           <p className="text-xs leading-5 text-slate-500">Minimal 8 karakter, dengan sedikitnya satu huruf dan satu angka.</p>
           <RegistrationSubmitButton />
         </form>
