@@ -1,5 +1,11 @@
 # DUTA AI Build Status
 
+## DUTA Rantau brand identity
+
+- The approved DUTA Rantau artwork is now the primary home-page brand visual.
+- A compact crop from the same approved artwork replaces the former generic letter mark in shared navigation, footer, and authentication surfaces.
+- Social sharing and browser icon metadata now use the approved local brand assets without adding a remote image dependency.
+
 ## LAYANAN-1 — canonical Malaysia jurisdiction foundation
 
 - `/layanan` Smart Gateway foundation implemented while `/connect` remains active.

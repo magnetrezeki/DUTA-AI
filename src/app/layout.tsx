@@ -14,12 +14,14 @@ export const metadata: Metadata = {
   },
   description:
     "Platform digital tepercaya untuk masyarakat Indonesia di luar negeri.",
+  icons: { icon: "/brand/duta-rantau-mark.webp", apple: "/brand/duta-rantau-mark.webp" },
   openGraph: {
     type: "website",
     locale: "id_ID",
     siteName: "DUTA AI",
     title: "DUTA AI",
     description: "Informasi tepercaya untuk masyarakat Indonesia di luar negeri.",
+    images: [{ url: "/brand/duta-rantau-brand.webp", width: 1254, height: 1254, alt: "DUTA Rantau" }],
   },
   twitter: { card: "summary", title: "DUTA AI", description: "Informasi tepercaya untuk masyarakat Indonesia di luar negeri." },
 };

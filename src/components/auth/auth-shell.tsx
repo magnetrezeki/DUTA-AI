@@ -11,7 +11,7 @@ export function AuthShell({ title, description, children }: AuthShellProps) {
         <div className="mx-auto grid max-w-5xl overflow-hidden rounded-[var(--radius-xl)] border border-slate-200 bg-white shadow-[var(--shadow-raised)] lg:grid-cols-[0.88fr_1.12fr]">
           <aside className="hidden bg-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
             <div>
-              <BrandMark />
+              <BrandMark inverted />
               <p className="mt-12 text-xs font-bold uppercase tracking-[0.18em] text-red-300">Ruang aman DUTA</p>
               <h2 className="mt-4 text-3xl font-bold tracking-tight">Satu akun, akses yang tetap berada dalam kendali Anda.</h2>
               <ul className="mt-7 space-y-4 text-sm leading-6 text-slate-300">
