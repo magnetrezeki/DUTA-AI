@@ -1,5 +1,15 @@
 # DUTA AI Build Status
 
+## LAYANAN-1 — canonical Malaysia jurisdiction foundation
+
+- `/layanan` Smart Gateway foundation implemented while `/connect` remains active.
+- Six frozen Malaysia mission identities reuse the existing Master Source Registry IDs.
+- Semenanjung, Sarawak, and all 28 approved Sabah/Labuan jurisdiction entries are represented by one deterministic resolver.
+- Sabah without a district fails closed and requests clarification; unknown districts are never guessed.
+- Approved aliases are normalized deterministically without fuzzy matching.
+- Concrete services, contacts, appointments, fees, and requirements remain unpublished until their existing evidence/publication contract is satisfied.
+- Hosted Supabase was not modified; News ingestion and JIM remain disabled.
+
 ## DUTA News V2 — hosted migration verified, application cutover pending
 
 - Additive News V2 migration manually applied to hosted Supabase from the
@@ -485,3 +495,110 @@ service integration work begins.
 - UI-5 remains local and uncommitted. Authentication logic, authorization, business logic,
   database schema, migrations, RLS, hosted Supabase, JIM integration, and ingestion
   authorization remain unchanged.
+### LAYANAN-2 operational manifest readiness (local, blocked fail-closed)
+
+- Repository-wide evidence audit found no approved target-specific operational facts for a real mission service, contact/handoff, fee, requirement, appointment, or service hours for the six frozen Malaysia missions.
+- Master Source Registry mission identities and category scopes are preserved as provenance/classification; they are not treated as proof that a concrete service or contact is currently offered.
+- No production population SQL was created, because doing so would require inventing or promoting unsupported operational claims.
+- A SELECT-only hosted collision/readiness preflight and a SELECT-only curated-reader post-population validation are prepared for the next evidence-backed checkpoint.
+- Hosted Supabase remains unchanged; RLS, authorization, News, JIM ingestion, and Day 2 demo records remain unchanged.
+### LAYANAN-2A production evidence manifest consolidation (local, partial)
+
+- User-approved KRI Tawau office identity, five district jurisdictions, official website, official email, and two general office telephone numbers are normalized in an auditable local manifest.
+- KRI Tawau jurisdiction coverage is now explicitly VERIFIED for Tawau, Kalabakan, Kunak, Lahad Datu, and Semporna; no whole-Sabah KRI jurisdiction was introduced.
+- Contact numbers preserve their supplied raw representation and have deterministic E.164 normalization.
+- A SELECT-only collision preflight covers deterministic IDs, natural identities, evidence associations, and open conflicts.
+- Population SQL remains blocked: the existing contact schema requires a service category, while no concrete evidence-backed service category or mission-service relationship was supplied. Verification/effective timestamps required for publication also remain absent.
+- The other five missions still lack approved field-level operational service/contact evidence. Hosted Supabase, RLS, authorization, News, JIM, and demo records remain unchanged.
+### Master Operational Evidence Manifest V1 (local normalization)
+
+- `docs/data/DUTA_LAYANAN_OPERATIONAL_EVIDENCE_V1.md` is now the canonical repository record for product-owner-reviewed Malaysia mission operational evidence.
+- It normalizes 80 explicit current fee rows for KBRI Kuala Lumpur, KJRI Kota Kinabalu, and KRI Tawau, plus 30 exact contact/endpoint facts across the six missions.
+- KRI Tawau remains frozen to five verified Sabah districts; its historical 2021 appointment evidence is explicitly non-current.
+- Missing exact tariff rows for Kuching, Penang, and Johor Bahru, missing KBRI Kuala Lumpur contact values, missing requirements/hours, and the general-contact category modeling limitation remain fail-closed.
+- No population SQL or hosted write was performed. RLS, authorization, curated views, News, JIM, and Day 2 demo records remain unchanged.
+### LAYANAN evidence recovery and hosted-population gate (local NO-GO)
+
+- `docs/data/DUTA_LAYANAN_EVIDENCE_RECOVERY_MATRIX_V1.md` reconciles every recovered evidence family into the required six-state classification.
+- The recovery retains 80 exact fee facts, 30 contact facts, six mission identities, and 42 frozen jurisdictions, but none is forced public.
+- Exact target-specific tariff/service evidence URLs or `official_source_items` are missing. Three tariff evidence families also lack exact row values, and general contacts retain a schema-modeling debt.
+- Consequently no complete deterministic population package exists, hosted preflight was not run, and no hosted transaction was attempted.
+- Hosted Supabase, RLS, authorization, curated readers, News, JIM, and Day 2 demo records remain unchanged.
+### LAYANAN evidence locator recovery pass (local)
+
+- A focused first-party locator pass recovered 16 distinct official URLs and 45 target-scoped evidence associations.
+- Core service evidence is now available for all six missions: 17/28 service candidates and 6/8 purpose-specific contacts are resolved for a minimal package.
+- All 80 KUL/BKI/TWU fee candidates remain excluded because their exact tariff-publication locators were not recovered; mission homepages were not substituted.
+- Minimum core readiness is 6/6 because fees and optional contacts are not required by the approved minimum-readiness rule.
+- Hosted Supabase, RLS, authorization, News, JIM, and Day 2 demo records remain unchanged. No population SQL was generated in this pass.
+## LAYANAN-2D product-owner verification package (local, not executed)
+
+- All 28 canonical Malaysia mission-service relationships are recorded as DUTA verified.
+- 17 have granular target-specific locators; 11 remain `GRANULAR_EVIDENCE_LOCATOR_PENDING` and disabled under the existing evidence predicate.
+- Deterministic IDs, SELECT-only collision preflight, transactional population SQL, and post-population validation are prepared locally.
+- Hosted preflight and population have not been run. RLS, authorization, curated views, News, and JIM are unchanged.
+- The 80 fee facts remain outside this service-verification decision and are not published.
+
+## LAYANAN-2E dual-provenance model (local, not executed)
+
+- A minimal additive migration extends the existing verification-event architecture with `OFFICIAL_SOURCE_VERIFIED` and `DUTA_REVIEWED_VERIFIED`.
+- DUTA-reviewed publication is limited to stable jurisdiction and mission-service facts. Contacts and fees retain their stronger target-evidence requirements.
+- DUTA review events require platform-level moderator/super-admin authority for authenticated writes; members, organization admins, and country admins cannot create that verification class.
+- Public provenance exposes a truthful class, localized label, reviewed source basis, and verification time without exposing reviewer-sensitive fields.
+- Hosted preflight, migration, population, and post-population validation remain unexecuted. Supabase hosted, News, and JIM are unchanged.
+# LAYANAN-2G deployment package hardening (local only)
+
+- Exact deterministic identity preflight, conflict-safe population guards,
+  assertive dual-provenance validation, and coordinated database/application
+  rollback documentation are prepared locally.
+- Hosted Supabase is unchanged. Migration and population execution remain
+  unapproved; no commit or push has been performed for this checkpoint.
+# LAYANAN-2H public provenance ACL hotfix (local only)
+
+- Confirmed hosted defect: Supabase default relation privileges gave `anon` and
+  `authenticated` direct write ACLs on `layanan_public_provenance`.
+- Source migration hardening, one additive ACL-only hotfix migration, a
+  role-separated hosted validator, and regression tests are prepared locally.
+- The hotfix has not been executed; hosted population remains unexecuted.
+# LAYANAN-2I population parser hardening (local only)
+
+- Replaced the reserved PostgreSQL relation alias `natural` with
+  `natural_match` in the population seed and added package-wide alias/parser
+  regression coverage.
+- Hosted Supabase remains unchanged and population remains unexecuted.
+
+# LAYANAN-2J frozen parent dependency recovery (local only)
+
+- Confirmed that the LAYANAN-2D verified-services package is a child seed and
+  intentionally fails before writes unless the frozen LAYANAN-1 parent set of
+  6 offices and 42 jurisdictions already exists.
+- Reused and hardened the single canonical LAYANAN-1 parent seed with exact
+  deterministic identity checks; no second parent dataset was created.
+- The existing SELECT-only LAYANAN-2E preflight is the pre-parent gate, and a
+  new SELECT-only exact post-parent validator and failed-child rollback check
+  are ready.
+- Hosted Supabase remains unchanged. Parent and child population remain
+  unexecuted by this checkpoint; no commit or push has been performed.
+
+# LAYANAN-2K district-aware jurisdiction uniqueness (local only)
+
+- Confirmed the Day 2 display-field constraint could not represent multiple
+  districts belonging to one office and state.
+- Prepared an additive migration replacing only that legacy constraint with a
+  normalized, district-aware `UNIQUE NULLS NOT DISTINCT` natural key.
+- SELECT-only collision and failed-parent rollback diagnostics are ready.
+- The frozen 6-office, 42-jurisdiction, and 4-alias parent data is unchanged.
+- Hosted Supabase remains unchanged; no commit or push has been performed.
+
+# DUTA LAYANAN release-preview deployment checkpoint
+
+- Hosted migrations `202608150001`, `202608150002`, and `202608150003` have
+  been manually applied and validated. They must not be replayed as part of
+  application deployment.
+- Deterministic parent and child population completed successfully: 6 public
+  Malaysia offices, 42 public jurisdictions, and 28 public mission services.
+- Service provenance is 17 `OFFICIAL_SOURCE_VERIFIED` and 11
+  `DUTA_REVIEWED_VERIFIED`. Public contacts and fees remain zero and continue
+  to fail closed behind their target-specific evidence gates.
+- `/layanan` and `/connect` use curated public readers only. No hosted write,
+  migration replay, or seed execution is part of the Vercel deployment.

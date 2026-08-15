@@ -36,11 +36,21 @@ type PublicJurisdiction = {
 };
 
 type PublicService = {
+  id: string;
   office_id: string;
   service_category_id: string;
   name: string;
   appointment_required: boolean;
   walk_in_allowed: boolean;
+};
+
+type PublicProvenance = {
+  target_type: "mission_service" | "office_jurisdiction";
+  target_id: string;
+  provenance_class: "OFFICIAL_SOURCE_VERIFIED" | "DUTA_REVIEWED_VERIFIED";
+  provenance_label: string;
+  source_name: string;
+  source_url: string;
 };
 
 type PublicContact = {
@@ -99,22 +109,27 @@ function Icon({ name }: { name: "search" | "location" | "shield" | "arrow" | "bu
 export default async function ConnectPage({ searchParams }: ConnectPageProps) {
   const params = await searchParams;
   const supabase = await createClient();
-  const [officeResult, jurisdictionResult, serviceResult] = await Promise.all([
+  const [officeResult, jurisdictionResult, serviceResult, provenanceResult] = await Promise.all([
     supabase.from("layanan_public_offices").select("id,country_code,name,office_type,city,address,latitude,longitude,last_verified_at,source_name,evidence_url").eq("country_code", "MY").order("name"),
     supabase.from("layanan_public_jurisdictions").select("id,state_name,district_name,office_id").eq("country_code", "MY").order("state_name"),
-    supabase.from("layanan_public_mission_services").select("office_id,service_category_id,name,appointment_required,walk_in_allowed").order("name"),
+    supabase.from("layanan_public_mission_services").select("id,office_id,service_category_id,name,appointment_required,walk_in_allowed").order("name"),
+    supabase.from("layanan_public_provenance").select("target_type,target_id,provenance_class,provenance_label,source_name,source_url"),
   ]);
 
-  const hasLoadError = Boolean(officeResult.error || jurisdictionResult.error || serviceResult.error);
+  const hasLoadError = Boolean(officeResult.error || jurisdictionResult.error || serviceResult.error || provenanceResult.error);
   const offices = (officeResult.data ?? []) as PublicOffice[];
   const officeIds = new Set(offices.map((office) => office.id));
   const jurisdictions = ((jurisdictionResult.data ?? []) as PublicJurisdiction[]).filter((item) => officeIds.has(item.office_id));
   const missionServices = ((serviceResult.data ?? []) as PublicService[]).filter((item) => officeIds.has(item.office_id));
+  const provenance = (provenanceResult.data ?? []) as PublicProvenance[];
   const selectedJurisdiction = jurisdictions.find((item) => item.id === params.state);
   const selectedOffice = offices.find((office) => office.id === selectedJurisdiction?.office_id);
   const availableServices = missionServices.filter((service, index, rows) => rows.findIndex((candidate) => candidate.service_category_id === service.service_category_id) === index);
   const selectedService = availableServices.find((item) => item.service_category_id === params.service);
   const officeServices = selectedOffice ? missionServices.filter((service) => service.office_id === selectedOffice.id) : [];
+  const selectedServiceProvenance = selectedOffice && selectedService
+    ? provenance.find((item) => item.target_type === "mission_service" && item.target_id === officeServices.find((service) => service.service_category_id === selectedService.service_category_id)?.id)
+    : undefined;
   let contacts: PublicContact[] = [];
   let contactLoadError = false;
 
@@ -208,6 +223,7 @@ export default async function ConnectPage({ searchParams }: ConnectPageProps) {
                 </div>
                 <div className="p-6 sm:p-8">
                   <div className="flex items-center gap-3"><span className="rounded-lg bg-emerald-50 p-2 text-brand-700"><Icon name="contact" /></span><div><p className="text-sm text-slate-500">Layanan dipilih</p><p className="font-bold text-slate-950">{selectedService?.name}</p></div></div>
+                  {selectedServiceProvenance && <div className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50/60 p-4"><p className="text-sm font-semibold text-emerald-950">{selectedServiceProvenance.provenance_label}</p><Link href={selectedServiceProvenance.source_url} target="_blank" rel="noreferrer" className="mt-1 inline-flex min-h-11 items-center text-xs font-semibold text-brand-700 hover:underline">Dasar sumber: {selectedServiceProvenance.source_name}</Link></div>}
                   {officeServices.length > 0 && <div className="mt-5 flex flex-wrap gap-2" aria-label="Layanan yang tersedia">{officeServices.map((service) => <span key={`${service.office_id}-${service.service_category_id}`} className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700">{service.name}</span>)}</div>}
                   {contactLoadError ? (
                     <div role="alert" className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800">Saluran kontak belum dapat dimuat. Gunakan tombol laman resmi untuk mendapatkan bantuan.</div>

@@ -1,0 +1,73 @@
+{
+  "version": "LAYANAN-2A",
+  "status": "PARTIAL",
+  "idNamespace": {
+    "offices": "75000000-0000-0000-0000-000000000001..006",
+    "jurisdictions": "75100000-0000-0000-0000-000000000001..042",
+    "contacts": "75500000-0000-0000-0000-000000000001..004",
+    "evidenceAssociations": "75600000-0000-0000-0000-000000000001..010",
+    "rule": "Stable UUID-shaped identifiers are assigned by entity namespace and frozen manifest position, never insertion order or random generation."
+  },
+  "missions": [
+    { "missionCode": "KBRI-KUL", "sourceId": "71000000-0000-0000-0000-000000000001", "readiness": "BLOCKED_OPERATIONAL_EVIDENCE" },
+    { "missionCode": "KJRI-JHB", "sourceId": "71000000-0000-0000-0000-000000000006", "readiness": "BLOCKED_OPERATIONAL_EVIDENCE" },
+    { "missionCode": "KJRI-PEN", "sourceId": "71000000-0000-0000-0000-000000000009", "readiness": "BLOCKED_OPERATIONAL_EVIDENCE" },
+    { "missionCode": "KJRI-KCH", "sourceId": "71000000-0000-0000-0000-000000000016", "readiness": "BLOCKED_OPERATIONAL_EVIDENCE" },
+    { "missionCode": "KJRI-BKI", "sourceId": "71000000-0000-0000-0000-000000000014", "readiness": "BLOCKED_OPERATIONAL_EVIDENCE" },
+    {
+      "missionCode": "KRI-TWU",
+      "sourceId": "71000000-0000-0000-0000-000000000019",
+      "officialEvidenceUrl": "https://kemlu.go.id/tawau",
+      "evidenceLevel": "A",
+      "office": {
+        "id": "75000000-0000-0000-0000-000000000006",
+        "name": "Konsulat Republik Indonesia Tawau",
+        "countryCode": "MY",
+        "state": "Sabah",
+        "city": "Tawau",
+        "officeType": "consulate",
+        "verificationStatus": "verified",
+        "publishabilityTarget": "VERIFIED_OFFICIAL",
+        "isDemo": false
+      },
+      "jurisdictions": [
+        { "id": "75100000-0000-0000-0000-000000000016", "state": "Sabah", "district": "Tawau", "type": "DISTRICT", "status": "VERIFIED" },
+        { "id": "75100000-0000-0000-0000-000000000020", "state": "Sabah", "district": "Kalabakan", "type": "DISTRICT", "status": "VERIFIED" },
+        { "id": "75100000-0000-0000-0000-000000000017", "state": "Sabah", "district": "Kunak", "type": "DISTRICT", "status": "VERIFIED" },
+        { "id": "75100000-0000-0000-0000-000000000019", "state": "Sabah", "district": "Lahad Datu", "type": "DISTRICT", "status": "VERIFIED" },
+        { "id": "75100000-0000-0000-0000-000000000018", "state": "Sabah", "district": "Semporna", "type": "DISTRICT", "status": "VERIFIED" }
+      ],
+      "contacts": [
+        { "id": "75500000-0000-0000-0000-000000000001", "type": "website", "rawValue": "https://kemlu.go.id/tawau", "normalizedValue": "https://kemlu.go.id/tawau", "url": "https://kemlu.go.id/tawau", "purpose": "GENERAL" },
+        { "id": "75500000-0000-0000-0000-000000000002", "type": "email", "rawValue": "tawau.kri@kemlu.go.id", "normalizedValue": "tawau.kri@kemlu.go.id", "purpose": "GENERAL" },
+        { "id": "75500000-0000-0000-0000-000000000003", "type": "phone", "rawValue": "+60 89 772052", "normalizedValue": "+6089772052", "e164Phone": "+6089772052", "purpose": "GENERAL" },
+        { "id": "75500000-0000-0000-0000-000000000004", "type": "phone", "rawValue": "+60 89 752969", "normalizedValue": "+6089752969", "e164Phone": "+6089752969", "purpose": "GENERAL" }
+      ],
+      "evidenceAssociations": [
+        { "id": "75600000-0000-0000-0000-000000000001", "targetType": "representative_office", "targetId": "75000000-0000-0000-0000-000000000006" },
+        { "id": "75600000-0000-0000-0000-000000000002", "targetType": "office_jurisdiction", "targetId": "75100000-0000-0000-0000-000000000016" },
+        { "id": "75600000-0000-0000-0000-000000000003", "targetType": "office_jurisdiction", "targetId": "75100000-0000-0000-0000-000000000020" },
+        { "id": "75600000-0000-0000-0000-000000000004", "targetType": "office_jurisdiction", "targetId": "75100000-0000-0000-0000-000000000017" },
+        { "id": "75600000-0000-0000-0000-000000000005", "targetType": "office_jurisdiction", "targetId": "75100000-0000-0000-0000-000000000019" },
+        { "id": "75600000-0000-0000-0000-000000000006", "targetType": "office_jurisdiction", "targetId": "75100000-0000-0000-0000-000000000018" },
+        { "id": "75600000-0000-0000-0000-000000000007", "targetType": "contact_channel", "targetId": "75500000-0000-0000-0000-000000000001" },
+        { "id": "75600000-0000-0000-0000-000000000008", "targetType": "contact_channel", "targetId": "75500000-0000-0000-0000-000000000002" },
+        { "id": "75600000-0000-0000-0000-000000000009", "targetType": "contact_channel", "targetId": "75500000-0000-0000-0000-000000000003" },
+        { "id": "75600000-0000-0000-0000-000000000010", "targetType": "contact_channel", "targetId": "75500000-0000-0000-0000-000000000004" }
+      ],
+      "serviceCategories": [],
+      "missionServices": [],
+      "fees": [],
+      "requirements": [],
+      "appointments": [],
+      "hours": [],
+      "missing": [
+        "Evidence-backed concrete service category and mission-service relationship",
+        "Verification timestamp/effective period for publication fields",
+        "A service category required by the existing non-null contact schema"
+      ],
+      "conflicts": [],
+      "readiness": "PARTIAL"
+    }
+  ]
+}
