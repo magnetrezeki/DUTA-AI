@@ -12,6 +12,9 @@ test("the optional OpenAI secret is never public-prefixed", () => assert.doesNot
 test("baseline production security headers are configured", () => {
   const config = read("next.config.ts");
   for (const header of ["Content-Security-Policy", "X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Permissions-Policy"]) assert.match(config, new RegExp(header));
+  assert.match(config, /VERCEL_ENV === "preview"/);
+  assert.match(config, /NODE_ENV === "development"/);
+  assert.match(config, /Production deliberately never receives unsafe-eval/);
 });
 test("auth email redirects use configured app URL rather than request origin", () => {
   const actions = read("src/app/(auth)/actions.ts");
@@ -36,8 +39,16 @@ test("404 and unexpected application errors have safe localized fallbacks", () =
 });
 test("mobile navigation has a compact small-screen menu", () => {
   const header = read("src/components/layout/site-header.tsx");
-  assert.match(header, /lg:hidden/);
+  const mobile = read("src/components/layout/mobile-navigation.tsx");
+  assert.match(header, /<MobileNavigation \/>/);
   assert.match(header, /hidden items-center.*lg:flex/);
+  assert.match(mobile, /lg:hidden/);
+  assert.match(mobile, /aria-expanded=\{open\}/);
+  assert.match(mobile, /aria-controls=\{panelId\}/);
+  assert.match(mobile, /event\.key === "Escape"/);
+  assert.match(mobile, /document\.body\.style\.overflow = "hidden"/);
+  assert.match(mobile, /onClick=\{\(\) => closeMenu\(\)\}/);
+  assert.match(mobile, /fixed inset-0 z-\[100\]/);
 });
 test("Day 7 adds no database migration", () => {
   for (const day of [1, 2, 3, 4, 5]) assert.ok(existsSync(new URL(`../supabase/migrations/20260808000${day}_day${day}_${["auth_foundation", "connect_news", "duta_map", "community_os", "duta_karier"][day - 1]}.sql`, import.meta.url)));

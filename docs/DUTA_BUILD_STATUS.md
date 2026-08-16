@@ -1,5 +1,135 @@
 # DUTA AI Build Status
 
+## DUTA Rantau brand identity
+
+- The approved DUTA Rantau artwork is now the primary home-page brand visual.
+- A compact crop from the same approved artwork replaces the former generic letter mark in shared navigation, footer, and authentication surfaces.
+- Social sharing and browser icon metadata now use the approved local brand assets without adding a remote image dependency.
+
+## LAYANAN-1 — canonical Malaysia jurisdiction foundation
+
+- `/layanan` Smart Gateway foundation implemented while `/connect` remains active.
+- Six frozen Malaysia mission identities reuse the existing Master Source Registry IDs.
+- Semenanjung, Sarawak, and all 28 approved Sabah/Labuan jurisdiction entries are represented by one deterministic resolver.
+- Sabah without a district fails closed and requests clarification; unknown districts are never guessed.
+- Approved aliases are normalized deterministically without fuzzy matching.
+- Concrete services, contacts, appointments, fees, and requirements remain unpublished until their existing evidence/publication contract is satisfied.
+- Hosted Supabase was not modified; News ingestion and JIM remain disabled.
+
+## DUTA News V2 — hosted migration verified, application cutover pending
+
+- Additive News V2 migration manually applied to hosted Supabase from the
+  reviewed `release-preview` revision
+- Existing `official_sources`, `official_source_items`, and `news_items` are extended;
+  no parallel source or article domain model is introduced
+- Exactly seven normalized supporting tables cover controlled categories, source
+  scopes, article categories, editorial reviews, duplicate relationships,
+  integrations, and source-rights assessments
+- Public V2 reads use `news_public_items`, with complete Registry/source/article/
+  provenance/editorial/duplicate parent-chain checks
+- Security-review remediation removed normal-user access to raw `news_items`,
+  `official_sources`, provenance, and editorial tables; authorized administration
+  continues through the existing country-aware RLS mechanism
+- Final policy remediation explicitly removes both historical public-read policies
+  from `official_sources`; the reconstructed final policy set contains only the
+  existing country/platform-admin management policy
+- `/news`, DUTA AI News, and the public Registry helper now use only the curated
+  `news_public_items` and `official_sources_public` readers
+- The compatible application cutover is ready but has not yet been deployed to
+  Vercel Preview
+- `NEWS_URL_CANON_V1`, hard-versus-possible duplicate handling, copyright-safe
+  thumbnail rules, and historical `RESTRICT` foreign keys are included
+- Existing demo News remains preserved but is excluded from the V2 curated reader
+- Canonicalization now rejects credentials, malformed authority, whitespace, and
+  control characters; it preserves path slashes and performs no HTTP-to-HTTPS upgrade
+- A rollback-only hosted PostgreSQL/RLS test is prepared but has not been executed
+- JIM-MYS, publishers, media data, articles, historical backfill, RSS, API, and
+  scraping are not seeded or enabled
+- Hosted migration execution: MANUALLY APPLIED to Supabase
+- Hosted schema and RLS/grant/policy verification: PASS; curated database
+  readers and the compatible application cutover are ready
+- Final blocker remediation validation: 72/72 targeted and 189/189 full tests PASS;
+  the hosted News V2 RLS transaction test remains NOT EXECUTED
+
+Last updated: 11 August 2026
+
+## DUTA News V2 — Group A/B hosted; Group C seed prepared locally
+
+- Source-only seed prepared for exactly 22 existing verified Indonesian mission
+  channels in Malaysia; legacy aliases, attaché channels, demo sources, and unrelated
+  Registry records are excluded
+- Source-only seed prepared for three product-approved and technically validated
+  Jabatan Imigresen Malaysia channels: official website, Facebook, and Instagram
+- JIM uses deterministic Registry identities and records 11 August 2026 only as
+  DUTA's source review/verification date
+- All automatic ingestion remains fail-closed: RSS, API, scraping, credentials,
+  cron jobs, workers, and `news_ingestion_authorized` remain disabled
+- No article, `official_source_items`, thumbnail-rights assessment, or historical
+  backfill is included
+- Separate read-only hosted JIM collision diagnostic prepared
+- Group A hosted source-only seed: COMPLETE and verified at 22/22
+- Group B hosted source-only seed: COMPLETE and verified at 3/3
+- Group C hosted collision diagnostic: PASS at 26/26 with no collision found
+- Group C regional-media source-only seed: PREPARED LOCALLY, NOT EXECUTED
+- Group C's first hosted execution attempt was rejected safely because the country
+  master lacked Indonesia (`ID`); the explicit transaction left no approved seed
+  completion to record
+- A separate deterministic Indonesia country master-data seed is PREPARED LOCALLY,
+  NOT EXECUTED, with `is_active = false` so Malaysia remains the only active rollout
+  country while the Group C foreign-key dependency can be satisfied after approval
+- A separate SELECT-only hosted Indonesia/Malaysia collision diagnostic is prepared
+- A country-admin self-scope escalation was identified before country-seed execution;
+  an additive database-trigger hardening migration and rollback-only hosted RLS test
+  are PREPARED LOCALLY and NOT EXECUTED. The fix blocks a `country_admin` from
+  changing their own authorization country while preserving ordinary profile edits
+- Group C uses deterministic identities, exact reviewed canonical URLs, and the
+  frozen `MEDIA` / `INDONESIAN_MEDIA` / Indonesia-region classifications
+- Group C ingestion remains disabled: no RSS, API, scraping, automatic integration,
+  article rows, or image-rights escalation is included
+
+Last updated: 11 August 2026
+
+## DUTA Layanan WNI Phase 2 — hosted migration verified, seed pending
+
+- Hosted Day 2 collision diagnostics: PASS; no normalized office, jurisdiction,
+  active-channel, or service-slug collision was reported
+- The unexpected office/source mapping was confirmed as the preserved Day 2 DEMO row
+- Additive operational schema migration prepared without Malaysia operational seed data
+- Existing Registry and Day 2 tables are reused; no competing source, mission,
+  jurisdiction, service taxonomy, or channel table was introduced
+- Evidence-backed publishability, conflict exclusion, historical verification,
+  authenticated reports, country-scoped administration, and RLS are included
+- Phase 2 safety-review blockers were remediated in the reviewed migration before
+  hosted application:
+  no policy drops, no broad anonymous operational-table reads, curated fee-only
+  date-uncertain output, evidence-target constraints, historical jurisdiction
+  preservation with serialized temporal-overlap prevention, complete typed-target
+  indexes, restrictive event history, parent-chain publishability, unique evidence
+  associations, bidirectional event/service lookup coverage, and exclusive curated
+  public reads with direct base-table access restricted to authorized administrators
+- `/connect` and DUTA AI official office/contact tools now use the evidence-backed
+  `layanan_public_*` views instead of Day 2 operational base tables
+- `/connect` compatibility is preserved; `/layanan` application work has not started
+- Hosted migration execution: MANUALLY APPLIED to Supabase
+- Hosted schema verification, hosted RLS verification, and rollback-only hosted
+  transaction verification: PASS; no test rows were left behind
+- Evidence-linked Malaysia operational seed: NOT EXECUTED
+
+Last updated: 11 August 2026
+
+## DUTA Master Source Registry v1.0 — local implementation
+
+- Existing Day 2 `official_sources` table extended without duplicating the domain model
+- 27 explicitly approved active Malaysian official sources seeded with deterministic IDs
+- 1 REVIEW, 2 HOLD, and 1 LEGACY source retained disabled for safe follow-up
+- Verification level, registry status, priority, platform, and category validation added
+- Public access restricted to enabled VERIFIED A/B sources; admin writes remain country-scoped
+- Protected `/admin/official-sources` registry with filters and controlled editing
+- Server-only enabled-source data access prepared for Connect, News, and future ingestion
+- `official_source_items` schema prepared for future authorized ingestion and deduplication
+- No scraping, feed/API activation, service-role usage, or new secret added
+- Hosted migration application: DEFERRED pending product-owner review
+
 Last updated: 8 August 2026
 
 ## Current milestone
@@ -223,3 +353,258 @@ Completed on 8 August 2026:
 
 The product owner must approve the next development phase before feature or
 service integration work begins.
+
+## DUTA News V2 Phase 2E local JIM RSS preparation
+
+- Local-only, single-endpoint JIM RSS fetch-security contract prepared for
+  `https://www.imi.gov.my/index.php/feed/`; it performs no live request by itself.
+- HTTPS, exact host/path/port, DNS/IP, redirect, timeout, MIME, charset, compression,
+  payload-size, XML-depth, item-count, and field-size controls are fail-closed.
+- RSS/Atom candidates stop at `FETCHED`; no Supabase write, publishing, thumbnail,
+  AI tool access, worker grant, cron, or automatic polling path was added.
+- Deterministic local fixtures cover valid and hostile feeds, sanitization,
+  duplicate identities, unsafe destinations, and prompt-injection text as inert data.
+- JIM terms review remains REQUIRED; `news_ingestion_authorized=false`, no JIM
+  integration exists, and no one-time live fetch is authorized.
+- Phase 2E-R1 adds a concrete DNS-pinned Node HTTPS transport, manual fail-closed
+  redirect handling, bounded wire/decompression streams, active request/socket
+  timeouts, frozen canonicalization parity, and reachable review-only fingerprint
+  identity. It remains local and inactive pending independent security re-review.
+- Phase 2E-R3 hardens the pinned Node lookup contract (including `all: true` and
+  deterministic address-family selection), centralizes terminal resource cleanup,
+  replaces regex structural XML parsing with a bounded fail-closed tokenizer, and
+  adds local-only TLS/runtime and XML structural proof. No live fetch or integration
+  authorization was added; the independent R3 review and terms review remain required.
+- Phase 2E-R5 removes caller-controlled security overrides from the fixed production
+  fetch entry point, isolates the reusable lifecycle core, generates ephemeral TLS
+  certificates only during local tests, and strengthens XML well-formedness,
+  namespace, RSS/Atom structure, Atom-link semantics, and parse-time resource limits.
+  Live fetching and ingestion remain unauthorized pending final independent review
+  and the separate terms review.
+- Phase 2E-R7 inlines the security-sensitive transport core as non-exported production
+  implementation, moves injectable lifecycle support entirely under tests, adds
+  behavioral late-error and listener-retirement coverage, and closes the remaining
+  XML character-data and reserved-namespace gaps. Live fetching, integration creation,
+  and ingestion authorization remain prohibited pending independent review and terms.
+- Phase 2E-R9 removes the duplicated test transport lifecycle. Local behavioral tests
+  now execute a temporary instrumented build of the exact production transport source,
+  while the repository's production API continues to export only the fixed JIM fetch.
+  Post-settlement error absorbers remain attached until request, socket, response, and
+  decompressor close state makes removal safe; repeated local TLS runs verify eventual
+  listener retirement and exactly-once settlement. No external request, hosted change,
+  integration creation, or ingestion authorization was performed; terms review remains
+  required before any separately approved one-time live dry fetch can be designed.
+- Phase 2E-R11 adds test-only controlled resources and timers around the same temporary
+  production-source build. Deterministic tests now hold request, socket, response, and
+  decompressor resources open across event-loop turns, inject mandatory late errors,
+  close each resource, and prove absorber removal. Controlled connection/timeout races
+  and twelve repeated lifecycle runs verify exactly-once settlement with no retained
+  error listeners, timers, streams, or sockets. These controls are absent from production
+  exports; live fetching and ingestion remain unauthorized pending terms review.
+- Phase 2E-R13 makes the controlled Node lifecycle asynchronous and independently
+  tracks every owned request, socket, response stream, decompressor, timer, and error
+  listener. Deterministic tests cover both connect/overall-timeout orderings, two-hop
+  redirect/timeout ordering, both response/decompressor-error orderings, and stale
+  callbacks fired during a later operation. Twelve naturally closing runs return the
+  global owned-resource registry exactly to baseline without forced cleanup. Production
+  exports remain unchanged; terms review and explicit approval are still required before
+  any live request, integration creation, or ingestion authorization.
+
+## Product-wide UI-1 local implementation
+
+- Design System V2 and App Shell V2 are implemented locally on `release-preview`.
+- Semantic visual tokens, typography, shared buttons/cards/forms/badges/alerts,
+  page headings, feedback states, and trust-state conventions are available for
+  subsequent page redesign phases.
+- Desktop navigation and the mobile overlay navigation now share the DUTA module
+  architecture; the mobile menu includes backdrop dismissal, Escape handling,
+  background scroll prevention, focus restoration, and accessible expanded state.
+- Representative public, authentication, application, and protected-route layouts
+  were checked at mobile, tablet, and desktop widths without horizontal overflow.
+- Full authorization/regression tests, lint, typecheck, and production build pass.
+- UI-1 changes are local and uncommitted; business logic, database schema, RLS,
+  hosted data, JIM integration, and ingestion authorization remain unchanged.
+
+## Product-wide UI-2 local implementation
+
+- Home now presents DUTA's Malaysia-first utility, core modules, trust layers,
+  DUTA AI entry point, and clear registration/login actions without adding
+  unsupported product claims.
+- Dashboard now prioritizes DUTA AI, official services, and career actions while
+  using only the authenticated profile, owned career counts, approved organization
+  memberships, and curated public News data. Empty data receives an honest next step.
+- DUTA AI now provides supported prompt suggestions, a mobile-safe composer,
+  intentional loading/error/empty states, readable answers, and distinct verified,
+  curated, community, and AI trust labels. It remains read-only and explicitly
+  identifies AI output as non-governmental synthesis.
+- Home and DUTA AI were visually checked at 390px, 768px, and 1440px without
+  horizontal overflow or browser runtime errors. Unauthenticated Dashboard access
+  continues to redirect safely to login.
+- Full 289-test regression, lint, typecheck, and production build pass. UI-2 remains
+  local and uncommitted; business logic, database, RLS, hosted data, JIM integration,
+  and ingestion authorization remain unchanged.
+
+## Product-wide UI-3 local implementation
+
+- Connect now leads with a compact location-and-service finder and presents the
+  resulting office, jurisdiction, service, contacts, and provenance in task order.
+  Contact actions are emitted only from curated values that actually exist.
+- News now presents one consistent multi-source newsfeed model. Supported discovery
+  modes cover latest items, government sources, and Malaysia; the existing region,
+  category, and source-type filters remain data-driven.
+- Every rendered News item preserves its publisher identity, source type, verification
+  level, publication time, region, category, summary, and external source path. The UI
+  does not claim that all sources are governmental or official.
+- Remote publisher images are not fetched automatically. Existing News V2 thumbnail
+  permission, curated-reader, copyright, and ingestion boundaries remain unchanged.
+- Connect and News were rendered at 390px, 768px, and 1440px without horizontal
+  overflow or runtime errors. Home and DUTA AI remain visually intact; unauthenticated
+  Dashboard access continues to redirect to login.
+- Targeted Connect/Layanan/News tests (97), the full 289-test regression, lint,
+  typecheck, and production build pass. UI-3 remains local and uncommitted; database,
+  RLS, hosted data, JIM fetch, integration, and ingestion authorization are unchanged.
+
+## Product-wide UI-4 local implementation
+
+- Career now presents a clear job-search journey with data-backed filters, prominent
+  source and verification context, saved/application/alert/Passport navigation, and
+  honest empty and unavailable states.
+- Employer and organization administration retain their existing server-side access
+  controls while gaining consistent workspace navigation and responsive loading/error
+  boundaries. No employer, application, organization, or role behavior changed.
+- Organizations now provides a structured community-discovery experience with explicit
+  verification context, readable filters, submission guidance, and honest empty states.
+- Map now provides a responsive community-place directory with accessible search and
+  category controls, clear trust framing, and preserved user-initiated location behavior.
+  It never requests precise location automatically.
+- Career, Organizations, and Map use shared module navigation, loading, and error
+  patterns. Unauthenticated protected routes continue to redirect safely to login.
+- Targeted Career/Organizations/Map security tests (30), the full 289-test regression,
+  lint, typecheck, and production build pass. UI-4 remains local and uncommitted;
+  business logic, database schema, RLS, hosted data, JIM integration, and ingestion
+  authorization remain unchanged.
+
+## Product-wide UI-5 local implementation
+
+- Login, registration, password recovery, and password update now share a mature DUTA
+  account experience with clear trust guidance, accessible password visibility controls,
+  preserved safe messages, and consistent loading/error boundaries.
+- Onboarding now groups only its two existing profile fields into a guided final setup
+  experience. No additional personal data, mandatory requirement, or profile behavior
+  was introduced.
+- Platform administration now has a distinct high-density operational identity, persistent
+  module navigation, an improved module overview, standardized operational forms, and
+  consistent loading/error boundaries. Existing server authorization remains the gate.
+- Product-wide visual consistency was reviewed across the public App Shell, authentication,
+  core modules, module navigation, feedback states, and representative protected entry
+  points. Protected content was not bypassed for visual inspection.
+- UI-5 remains local and uncommitted. Authentication logic, authorization, business logic,
+  database schema, migrations, RLS, hosted Supabase, JIM integration, and ingestion
+  authorization remain unchanged.
+### LAYANAN-2 operational manifest readiness (local, blocked fail-closed)
+
+- Repository-wide evidence audit found no approved target-specific operational facts for a real mission service, contact/handoff, fee, requirement, appointment, or service hours for the six frozen Malaysia missions.
+- Master Source Registry mission identities and category scopes are preserved as provenance/classification; they are not treated as proof that a concrete service or contact is currently offered.
+- No production population SQL was created, because doing so would require inventing or promoting unsupported operational claims.
+- A SELECT-only hosted collision/readiness preflight and a SELECT-only curated-reader post-population validation are prepared for the next evidence-backed checkpoint.
+- Hosted Supabase remains unchanged; RLS, authorization, News, JIM ingestion, and Day 2 demo records remain unchanged.
+### LAYANAN-2A production evidence manifest consolidation (local, partial)
+
+- User-approved KRI Tawau office identity, five district jurisdictions, official website, official email, and two general office telephone numbers are normalized in an auditable local manifest.
+- KRI Tawau jurisdiction coverage is now explicitly VERIFIED for Tawau, Kalabakan, Kunak, Lahad Datu, and Semporna; no whole-Sabah KRI jurisdiction was introduced.
+- Contact numbers preserve their supplied raw representation and have deterministic E.164 normalization.
+- A SELECT-only collision preflight covers deterministic IDs, natural identities, evidence associations, and open conflicts.
+- Population SQL remains blocked: the existing contact schema requires a service category, while no concrete evidence-backed service category or mission-service relationship was supplied. Verification/effective timestamps required for publication also remain absent.
+- The other five missions still lack approved field-level operational service/contact evidence. Hosted Supabase, RLS, authorization, News, JIM, and demo records remain unchanged.
+### Master Operational Evidence Manifest V1 (local normalization)
+
+- `docs/data/DUTA_LAYANAN_OPERATIONAL_EVIDENCE_V1.md` is now the canonical repository record for product-owner-reviewed Malaysia mission operational evidence.
+- It normalizes 80 explicit current fee rows for KBRI Kuala Lumpur, KJRI Kota Kinabalu, and KRI Tawau, plus 30 exact contact/endpoint facts across the six missions.
+- KRI Tawau remains frozen to five verified Sabah districts; its historical 2021 appointment evidence is explicitly non-current.
+- Missing exact tariff rows for Kuching, Penang, and Johor Bahru, missing KBRI Kuala Lumpur contact values, missing requirements/hours, and the general-contact category modeling limitation remain fail-closed.
+- No population SQL or hosted write was performed. RLS, authorization, curated views, News, JIM, and Day 2 demo records remain unchanged.
+### LAYANAN evidence recovery and hosted-population gate (local NO-GO)
+
+- `docs/data/DUTA_LAYANAN_EVIDENCE_RECOVERY_MATRIX_V1.md` reconciles every recovered evidence family into the required six-state classification.
+- The recovery retains 80 exact fee facts, 30 contact facts, six mission identities, and 42 frozen jurisdictions, but none is forced public.
+- Exact target-specific tariff/service evidence URLs or `official_source_items` are missing. Three tariff evidence families also lack exact row values, and general contacts retain a schema-modeling debt.
+- Consequently no complete deterministic population package exists, hosted preflight was not run, and no hosted transaction was attempted.
+- Hosted Supabase, RLS, authorization, curated readers, News, JIM, and Day 2 demo records remain unchanged.
+### LAYANAN evidence locator recovery pass (local)
+
+- A focused first-party locator pass recovered 16 distinct official URLs and 45 target-scoped evidence associations.
+- Core service evidence is now available for all six missions: 17/28 service candidates and 6/8 purpose-specific contacts are resolved for a minimal package.
+- All 80 KUL/BKI/TWU fee candidates remain excluded because their exact tariff-publication locators were not recovered; mission homepages were not substituted.
+- Minimum core readiness is 6/6 because fees and optional contacts are not required by the approved minimum-readiness rule.
+- Hosted Supabase, RLS, authorization, News, JIM, and Day 2 demo records remain unchanged. No population SQL was generated in this pass.
+## LAYANAN-2D product-owner verification package (local, not executed)
+
+- All 28 canonical Malaysia mission-service relationships are recorded as DUTA verified.
+- 17 have granular target-specific locators; 11 remain `GRANULAR_EVIDENCE_LOCATOR_PENDING` and disabled under the existing evidence predicate.
+- Deterministic IDs, SELECT-only collision preflight, transactional population SQL, and post-population validation are prepared locally.
+- Hosted preflight and population have not been run. RLS, authorization, curated views, News, and JIM are unchanged.
+- The 80 fee facts remain outside this service-verification decision and are not published.
+
+## LAYANAN-2E dual-provenance model (local, not executed)
+
+- A minimal additive migration extends the existing verification-event architecture with `OFFICIAL_SOURCE_VERIFIED` and `DUTA_REVIEWED_VERIFIED`.
+- DUTA-reviewed publication is limited to stable jurisdiction and mission-service facts. Contacts and fees retain their stronger target-evidence requirements.
+- DUTA review events require platform-level moderator/super-admin authority for authenticated writes; members, organization admins, and country admins cannot create that verification class.
+- Public provenance exposes a truthful class, localized label, reviewed source basis, and verification time without exposing reviewer-sensitive fields.
+- Hosted preflight, migration, population, and post-population validation remain unexecuted. Supabase hosted, News, and JIM are unchanged.
+# LAYANAN-2G deployment package hardening (local only)
+
+- Exact deterministic identity preflight, conflict-safe population guards,
+  assertive dual-provenance validation, and coordinated database/application
+  rollback documentation are prepared locally.
+- Hosted Supabase is unchanged. Migration and population execution remain
+  unapproved; no commit or push has been performed for this checkpoint.
+# LAYANAN-2H public provenance ACL hotfix (local only)
+
+- Confirmed hosted defect: Supabase default relation privileges gave `anon` and
+  `authenticated` direct write ACLs on `layanan_public_provenance`.
+- Source migration hardening, one additive ACL-only hotfix migration, a
+  role-separated hosted validator, and regression tests are prepared locally.
+- The hotfix has not been executed; hosted population remains unexecuted.
+# LAYANAN-2I population parser hardening (local only)
+
+- Replaced the reserved PostgreSQL relation alias `natural` with
+  `natural_match` in the population seed and added package-wide alias/parser
+  regression coverage.
+- Hosted Supabase remains unchanged and population remains unexecuted.
+
+# LAYANAN-2J frozen parent dependency recovery (local only)
+
+- Confirmed that the LAYANAN-2D verified-services package is a child seed and
+  intentionally fails before writes unless the frozen LAYANAN-1 parent set of
+  6 offices and 42 jurisdictions already exists.
+- Reused and hardened the single canonical LAYANAN-1 parent seed with exact
+  deterministic identity checks; no second parent dataset was created.
+- The existing SELECT-only LAYANAN-2E preflight is the pre-parent gate, and a
+  new SELECT-only exact post-parent validator and failed-child rollback check
+  are ready.
+- Hosted Supabase remains unchanged. Parent and child population remain
+  unexecuted by this checkpoint; no commit or push has been performed.
+
+# LAYANAN-2K district-aware jurisdiction uniqueness (local only)
+
+- Confirmed the Day 2 display-field constraint could not represent multiple
+  districts belonging to one office and state.
+- Prepared an additive migration replacing only that legacy constraint with a
+  normalized, district-aware `UNIQUE NULLS NOT DISTINCT` natural key.
+- SELECT-only collision and failed-parent rollback diagnostics are ready.
+- The frozen 6-office, 42-jurisdiction, and 4-alias parent data is unchanged.
+- Hosted Supabase remains unchanged; no commit or push has been performed.
+
+# DUTA LAYANAN release-preview deployment checkpoint
+
+- Hosted migrations `202608150001`, `202608150002`, and `202608150003` have
+  been manually applied and validated. They must not be replayed as part of
+  application deployment.
+- Deterministic parent and child population completed successfully: 6 public
+  Malaysia offices, 42 public jurisdictions, and 28 public mission services.
+- Service provenance is 17 `OFFICIAL_SOURCE_VERIFIED` and 11
+  `DUTA_REVIEWED_VERIFIED`. Public contacts and fees remain zero and continue
+  to fail closed behind their target-specific evidence gates.
+- `/layanan` and `/connect` use curated public readers only. No hosted write,
+  migration replay, or seed execution is part of the Vercel deployment.

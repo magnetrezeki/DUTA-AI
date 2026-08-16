@@ -11,7 +11,7 @@ export default async function ForgotPasswordPage({ searchParams }: ForgotPasswor
   const params = await searchParams;
 
   return (
-    <AuthShell title="Atur ulang kata sandi" description="Kami akan mengirimkan tautan pemulihan ke email Anda.">
+    <AuthShell title="Pulihkan akses akun" description="Masukkan email akun Anda. Jika akun tersedia, kami akan mengirim tautan pemulihan yang aman.">
       <div className="space-y-5">
         {params.error && <FormNotice tone="error">Permintaan belum berhasil. Periksa email Anda dan coba lagi.</FormNotice>}
         {params.success && <FormNotice tone="success">Jika akun tersedia, petunjuk pemulihan telah dikirim ke email tersebut.</FormNotice>}
@@ -19,6 +19,7 @@ export default async function ForgotPasswordPage({ searchParams }: ForgotPasswor
           <Field id="email" name="email" type="email" label="Email" autoComplete="email" required />
           <SubmitButton>Kirim tautan pemulihan</SubmitButton>
         </form>
+        <p className="text-xs leading-5 text-slate-500">Gunakan hanya tautan terbaru dan jangan membagikannya kepada siapa pun.</p>
         <Link href="/login" className="text-sm font-semibold text-brand-700 hover:underline">Kembali ke halaman masuk</Link>
       </div>
     </AuthShell>

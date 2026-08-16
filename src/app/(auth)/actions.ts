@@ -3,6 +3,12 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { appUrl } from "@/lib/app-url";
+import {
+  classifyAuthError,
+  classifyThrownAuthError,
+  safeAuthErrorCode,
+  type RegistrationErrorCategory,
+} from "@/lib/auth/registration-errors";
 
 function formValue(formData: FormData, name: string) {
   const value = formData.get(name);
@@ -27,7 +33,97 @@ function destination(path: string, key: "error" | "success", value: string) {
   return `${path}?${params.toString()}`;
 }
 
+function logRegistrationFailure(
+  requestId: string,
+  category: RegistrationErrorCategory,
+  code: string,
+) {
+  console.error(
+    `[auth.register] signup failed ${JSON.stringify({ requestId, category, code })}`,
+  );
+}
+
+type PasswordUpdateErrorCategory =
+  | "password_policy"
+  | "recovery_session"
+  | "rate_limit"
+  | "network"
+  | "auth_rejected"
+  | "unknown";
+
+type PasswordUpdateErrorLike = {
+  code?: string;
+  message?: string;
+  name?: string;
+  status?: number;
+};
+
+function classifyPasswordUpdateError(
+  error: PasswordUpdateErrorLike,
+): PasswordUpdateErrorCategory {
+  const code = error.code?.toLowerCase() ?? "";
+  const message = error.message?.toLowerCase() ?? "";
+
+  if (error.status === 429 || code.includes("rate_limit")) return "rate_limit";
+  if (
+    code.includes("password") ||
+    code === "validation_failed" ||
+    message.includes("password")
+  ) {
+    return "password_policy";
+  }
+  if (
+    error.status === 401 ||
+    code.includes("session") ||
+    code.includes("token") ||
+    code.includes("jwt") ||
+    code.includes("otp") ||
+    code.includes("recovery")
+  ) {
+    return "recovery_session";
+  }
+  if (error.status === 400 || error.status === 403) return "auth_rejected";
+  return "unknown";
+}
+
+function classifyThrownPasswordUpdateError(
+  error: unknown,
+): PasswordUpdateErrorCategory {
+  if (error instanceof TypeError) return "network";
+  if (error && typeof error === "object" && "name" in error) {
+    const name = String(error.name);
+    if (name === "AuthRetryableFetchError" || name === "FetchError") {
+      return "network";
+    }
+  }
+  return "unknown";
+}
+
+function safeAuthErrorStatus(error: PasswordUpdateErrorLike) {
+  return typeof error.status === "number" && Number.isInteger(error.status)
+    ? error.status
+    : null;
+}
+
+function logPasswordUpdateFailure(
+  requestId: string,
+  category: PasswordUpdateErrorCategory,
+  status: number | null,
+  code: string,
+) {
+  console.error(
+    `[auth.recovery] operation failed ${JSON.stringify({
+      requestId,
+      operation: "password_update",
+      category,
+      status,
+      code,
+    })}`,
+  );
+}
+
 export async function register(formData: FormData) {
+  const requestId = crypto.randomUUID();
   const displayName = formValue(formData, "displayName");
   const email = formValue(formData, "email").toLowerCase();
   const password = rawFormValue(formData, "password");
@@ -44,23 +140,42 @@ export async function register(formData: FormData) {
     redirect(destination("/register", "error", "weak_password"));
   }
 
+  let emailRedirectTo: string;
+  try {
+    emailRedirectTo = appUrl("/auth/callback?next=/onboarding");
+  } catch {
+    logRegistrationFailure(requestId, "invalid_redirect", "invalid_app_url");
+    redirect(destination("/register", "error", "invalid_redirect"));
+  }
+
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { display_name: displayName },
-      emailRedirectTo: appUrl("/auth/callback?next=/onboarding"),
-    },
-  });
+  let result: Awaited<ReturnType<typeof supabase.auth.signUp>>;
+  try {
+    result = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { display_name: displayName },
+        emailRedirectTo,
+      },
+    });
+  } catch (error) {
+    const category = classifyThrownAuthError(error);
+    logRegistrationFailure(requestId, category, "request_failed");
+    redirect(destination("/register", "error", category));
+  }
+
+  const { data, error } = result;
 
   if (error) {
-    console.error("[auth.register] Supabase signUp failed", {
-      code: error.code,
-      status: error.status,
-      message: error.message,
-    });
-    redirect(destination("/register", "error", "registration_failed"));
+    const category = classifyAuthError(error);
+    logRegistrationFailure(requestId, category, safeAuthErrorCode(error));
+    redirect(destination("/register", "error", category));
+  }
+
+  if (data.user?.identities?.length === 0) {
+    logRegistrationFailure(requestId, "existing_account", "identity_not_created");
+    redirect(destination("/register", "error", "existing_account"));
   }
 
   if (data.session) {
@@ -121,19 +236,42 @@ export async function updatePassword(formData: FormData) {
     redirect(destination("/update-password", "error", "password_mismatch"));
   }
 
+  const requestId = crypto.randomUUID();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(destination("/login", "error", "reset_session_expired"));
+    logPasswordUpdateFailure(
+      requestId,
+      "recovery_session",
+      null,
+      "user_not_found",
+    );
+    redirect(destination("/update-password", "error", "recovery_session"));
   }
 
-  const { error } = await supabase.auth.updateUser({ password });
+  let result: Awaited<ReturnType<typeof supabase.auth.updateUser>>;
+  try {
+    result = await supabase.auth.updateUser({ password });
+  } catch (error) {
+    const category = classifyThrownPasswordUpdateError(error);
+    logPasswordUpdateFailure(requestId, category, null, "request_failed");
+    redirect(destination("/update-password", "error", category));
+  }
+
+  const { error } = result;
 
   if (error) {
-    redirect(destination("/update-password", "error", "reset_failed"));
+    const category = classifyPasswordUpdateError(error);
+    logPasswordUpdateFailure(
+      requestId,
+      category,
+      safeAuthErrorStatus(error),
+      safeAuthErrorCode(error),
+    );
+    redirect(destination("/update-password", "error", category));
   }
 
   redirect(destination("/login", "success", "password_updated"));

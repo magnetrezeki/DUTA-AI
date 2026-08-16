@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { Field, FormNotice, SubmitButton } from "@/components/auth/form-elements";
+import { PasswordField } from "@/components/auth/password-field";
 import { login } from "@/app/(auth)/actions";
 
 type LoginPageProps = {
@@ -21,7 +22,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams;
 
   return (
-    <AuthShell title="Masuk" description="Akses akun DUTA AI Anda dengan aman.">
+    <AuthShell title="Selamat datang kembali" description="Masuk untuk melanjutkan ke ruang DUTA Anda dengan aman.">
       <div className="space-y-5">
         {params.error && errorMessages[params.error] && (
           <FormNotice tone="error">{errorMessages[params.error]}</FormNotice>
@@ -31,7 +32,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         )}
         <form action={login} className="space-y-5">
           <Field id="email" name="email" type="email" label="Email" autoComplete="email" required />
-          <Field id="password" name="password" type="password" label="Kata sandi" autoComplete="current-password" required />
+          <PasswordField id="password" name="password" label="Kata sandi" autoComplete="current-password" required />
           <SubmitButton>Masuk</SubmitButton>
         </form>
         <div className="flex flex-col gap-2 text-sm">

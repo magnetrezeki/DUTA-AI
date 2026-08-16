@@ -1,0 +1,1 @@
+<?xml version="1.0"?><rss><channel><item><guid>unsafe-1</guid><title>Selamat</title><link>https://www.imi.gov.my/safe</link><description><![CDATA[<script>alert(1)</script><iframe src="x"></iframe><a href="javascript:alert(1)" onclick="bad()">Teks aman</a>]]></description></item></channel></rss>

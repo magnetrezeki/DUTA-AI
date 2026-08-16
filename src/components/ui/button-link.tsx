@@ -1,13 +1,9 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
+import { buttonClass, type ButtonVariant } from "@/components/ui/button";
 
-type ButtonLinkProps = ComponentPropsWithoutRef<typeof Link>;
+type ButtonLinkProps = ComponentPropsWithoutRef<typeof Link> & { variant?: ButtonVariant; size?: "default" | "sm" };
 
-export function ButtonLink({ className = "", ...props }: ButtonLinkProps) {
-  return (
-    <Link
-      className={`inline-flex min-h-11 items-center justify-center rounded-lg bg-brand-700 px-5 py-3 font-semibold text-white transition-colors hover:bg-brand-800 ${className}`}
-      {...props}
-    />
-  );
+export function ButtonLink({ className = "", variant = "primary", size = "default", ...props }: ButtonLinkProps) {
+  return <Link className={buttonClass(variant, `${size === "sm" ? "min-h-9 px-3 py-1.5" : ""} ${className}`)} {...props} />;
 }
